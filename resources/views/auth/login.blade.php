@@ -28,7 +28,7 @@
                             <br>
                             <small>
                                 {{ __('Username') }} <strong>admin@argon.com</strong>
-                                {{ __('Password') }} <strong>secret</strong>
+                                {{ __('Password') }} <strong>4dm1nketewel</strong>
                             </small>
                         </div>
                         <form role="form" method="POST" action="{{ route('login') }}">
