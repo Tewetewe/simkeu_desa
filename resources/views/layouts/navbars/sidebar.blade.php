@@ -89,10 +89,10 @@
                         <span class="nav-link-text" style="color: #f18902;">{{ __('Master Data') }}</span>
                     </a>
 
-                    <div class="collapse show" id="navbar-examples">
+                    <div class="collapse" id="navbar-examples">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('profile.edit') }}">
+                                <a class="nav-link" href="{{ route('kategori.index') }}">
                                     {{ __('Kategori') }}
                                 </a>
                             </li>
@@ -115,7 +115,7 @@
                         <span class="nav-link-text" style="color: rgb(62, 4, 255);">{{ __('Pendapatan') }}</span>
                     </a>
 
-                    <div class="collapse show" id="navbar-exampless">
+                    <div class="collapse" id="navbar-exampless">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('profile.edit') }}">
@@ -156,7 +156,7 @@
                         <span class="nav-link-text" style="color: #f4645f;">{{ __('Pengeluaran') }}</span>
                     </a>
 
-                    <div class="collapse show" id="navbar-examplesss">
+                    <div class="collapse" id="navbar-examplesss">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('profile.edit') }}">
