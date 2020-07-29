@@ -36,15 +36,17 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
+        
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $kategoris = new Kategori;
-        $kategoris = $request->kode;
+        $kategoris->kode = $request->kode;
         $kategoris->nama = $request->nama;
         $kategoris->tipe = $request->tipe;
         $kategoris->created_at = date('Y-m-d H:i:s');
         $kategoris->updated_at = date('Y-m-d H:i:s');
         $kategoris->status = 1;
         $kategoris->save();
+        return redirect('/kategori');
     }
 
     /**
@@ -66,7 +68,8 @@ class KategoriController extends Controller
      */
     public function edit($id)
     {
-        //
+        $kategoris = Kategori::find($id);
+        return view('kategori.edit', compact('kategoris'));
     }
 
     /**
@@ -78,7 +81,15 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $kategoris = Kategori::find($id);
+        $kategoris->kode = $request->kode;
+        $kategoris->nama = $request->nama;
+        $kategoris->tipe = $request->tipe;
+        $kategoris->updated_at = date("Y:m:d H:i:s");
+        $kategoris->status = $request->status;
+        $kategoris->save();
+        return redirect('/kategori');
     }
 
     /**
@@ -89,6 +100,10 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $kategoris = Kategori::find($id);
+        $kategoris->status = 0;
+        $kategoris->save();
+        return redirect('/kategori');
+        
     }
 }
