@@ -7,7 +7,6 @@
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <title>{{ config('app.name', 'Argon Dashboard') }}</title>
         <!-- Favicon -->
         <link href="{{ asset('argon') }}/img/brand/favicon.png" rel="icon" type="image/png">
