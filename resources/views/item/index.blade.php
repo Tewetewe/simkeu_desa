@@ -13,29 +13,45 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Kategori Pendapatan dan Belanja Desa</h2>
+                                <h2 class="mb-0">Master Item</h2>
                             </div>
                         </div>
                     </div>
 
                     <!-- Form Cari Data Dunia -->
                     <div class="p-4 bg-secondary">
-                        <form action="/kategori" method="POST">
+                        <form action="/item" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="example-text-input">Kode (Masukkan Kode Kategori)</label>
-                                <input class="form-control" type="text" name="kode" id="example-text-input" >
+                                <label for="example-text-input">Kode (Masukkan Item)</label>
+                                <input required class="form-control" type="text" name="kode" id="example-text-input" >
                             </div>
                             <div class="form-group">
-                                <label for="example-text-input">Kategori (Masukkan Nama Kategori)</label>
-                                <input class="form-control" type="text" name="nama" id="example-text-input" >
+                                <label for="exampleFormControlSelect1">Nama Item (Masukkan Nama Item)</label>
+                                <input required class="form-control" type="text" name="nama" id="example-text-input" >
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlSelect1">Tipe (Pilih Jenis Kategori)</label>
-                                <select class="form-control" id="drop" name="tipe">
-                                    <option value="1">Debit</option>
-                                    <option value="-1">Kredit</option>
+                                <label for="example-text-input">Pilih Satuan (Pilih Satuan yang Tersedia)</label>
+                                <select class="form-control" id="drop" name="satuan" required>
+                                    <option value="" selected disabled hidden>Pilih Kategori</option>
+                                    <option value="pcs">pcs</option>
+                                    <option value="lusin">lusin</option>
+                                    <option value="dus">dus</option>
+                                    <option value="meter">meter</option>
+                                    <option value="buah">buah</option>
+                                    <option value="pepel">pepel</option>
+                                    <option value="bulan">bulan</option>
+                                    <option value="orang">orang</option>
+                                    <option value="liter">liter</option>
+                                    <option value="orang">orang</option>
+                                    <option value="kodi">kodi</option>
+                                    <option value="hari">hari</option>
+                                    <option value="tahun">tahun</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Harga Satuan (Masukkan Harga Satuan)</label>
+                                <input required class="form-control" type="number" name="harga" id="example-text-input" >
                             </div>
                             {{-- <div class="input-daterange datepicker row align-items-center">
                                 <div class="col-12">
@@ -79,41 +95,38 @@
                                 <tr>
                                     <th scope="col">No.</th>
                                     <th scope="col">Kode</th>
-                                    <th scope="col">Ketegori</th>
-                                    <th scope="col">Tipe</th>
+                                    <th scope="col">Nama Item</th>
+                                    <th scope="col">Satuan</th>
+                                    <th scope="col">Harga</th>
                                     <th scope="col">Dibuat</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                     <th scope="col">Action</th>
-
                                 </tr>
                             </thead>
                             <tbody>
-                                @for ($i = 1; $i <= sizeof($kategoris); $i++)
+                                @for ($i = 1; $i <= sizeof($items); $i++)
                                     <tr>
                                         <td>{{ $i }}</td>
-                                        <td>{{ $kategoris[$i-1]->kode }}</td>
-                                        <td> {{ $kategoris[$i-1]->nama }}</td>
-                                        @if($kategoris[$i-1]->tipe == 1)
-                                            <td>Debit</td>
-                                        @else
-                                            <td>Kredit</td>
-                                        @endif
-                                        <td> {{ $kategoris[$i-1]->created_at }}</td>
-                                        @if($kategoris[$i-1]->status == 1)
+                                        <td>{{ $items[$i-1]->kode }}</td>
+                                        <td> {{ $items[$i-1]->nama_item}}</td>
+                                        <td> {{ $items[$i-1]->satuan}}</td>
+                                        <td> {{ $items[$i-1]->harga}}</td>
+                                        <td> {{ $items[$i-1]->created_at }}</td>
+                                        @if($items[$i-1]->status == 1)
                                             <td>Aktif</td>
                                         @else
                                             <td>Non Aktif</td>
                                         @endif
                                         <td>
-                                            <form action="kategori/{{$kategoris[$i-1]->id_ktg_transaksi}}/edit" method="GET">
+                                            <form action="item/{{$items[$i-1]->id_master_item}}/edit" method="GET">
                                                 <button type="submit" class="btn btn-info" data-container="body" data-toggle="popover" data-color="info" data-placement="top" data-content="Sunting Kategori">
                                                     Sunting
                                                 </button>
                                             </form>   
                                         </td>
                                         <td>
-                                            <form action="kategori/{{$kategoris[$i-1]->id_ktg_transaksi}}" method="POST">
+                                            <form action="item/{{$items[$i-1]->id_master_item}}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger" data-container="body" data-toggle="popover" data-color="danger" data-placement="top" data-content="Hapus Kategori">

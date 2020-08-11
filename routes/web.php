@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'UserController', ['except' => ['show']]);
 	Route::resource('/kategori', 'KategoriController');
 	Route::resource('/subkategori', 'SubKategoriController');
+	Route::resource('/sub2kategori', 'Sub2KategoriController');
 	Route::resource('/item', 'ItemController');
 	Route::resource('/transaksi', 'TransaksiController');
 	Route::resource('/detailtransaksi', 'DetailTransaksiController');

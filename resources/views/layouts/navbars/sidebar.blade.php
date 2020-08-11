@@ -97,12 +97,17 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
+                                <a class="nav-link" href="{{ route('subkategori.index') }}">
                                     {{ __('Sub Kategori') }}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
+                                <a class="nav-link" href="{{ route('sub2kategori.index') }}">
+                                    {{ __('Sub 2 Kategori') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('item.index') }}">
                                     {{ __('Item') }}
                                 </a>
                             </li>
@@ -183,6 +188,11 @@
                                     {{ __('Pembiayaan Desa Adat') }}
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('user.index') }}">
+                                    {{ __('Lain-lain') }}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -219,6 +229,21 @@
             <h6 class="navbar-heading text-muted">Report</h6>
             <!-- Navigation -->
             <ul class="navbar-nav mb-md-3">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html">
+                        <i class="ni ni-ui-04"></i> Report Pendapatan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html">
+                        <i class="ni ni-ui-04"></i> Report Pengeluaran
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
+                        <i class="ni ni-spaceship"></i> Report Harian
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
                         <i class="ni ni-spaceship"></i> Report Bulanan

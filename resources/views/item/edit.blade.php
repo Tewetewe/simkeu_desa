@@ -13,37 +13,52 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Kategori Pendapatan dan Belanja Desa</h2>
+                                <h2 class="mb-0">Master Item</h2>
                             </div>
                         </div>
                     </div>
 
                     <!-- Form Cari Data Dunia -->
                     <div class="p-4 bg-secondary">
-                    <form action="/kategori/{{$kategoris->id_ktg_transaksi}}" method="POST">
+                    <form action="/item/{{$items->id_master_item}}" method="POST">
                             @csrf
                             @method("PUT")
                             <div class="form-group">
-                                <label for="example-text-input">Kode (Masukkan Kode Kategori)</label>
-                            <input class="form-control" type="text" name="kode" id="example-text-input" required value="{{$kategoris->kode}}">
+                                <label for="example-text-input">Kode (Masukkan Item)</label>
+                            <input class="form-control" type="text" name="kode" id="example-text-input" required value="{{$items->kode}}">
                             </div>
                             <div class="form-group">
-                                <label for="example-text-input">Kategori (Masukkan Nama Kategori)</label>
-                                <input class="form-control" type="text" name="nama" id="example-text-input" required value="{{$kategoris->nama}}" >
+                                <label for="example-text-input">Nama Item (Masukkan Nama Item)</label>
+                                <input class="form-control" type="text" name="nama" id="example-text-input" required value="{{$items->nama_item}}" >
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlSelect1">Tipe (Pilih Jenis Kategori)</label>
-                            <select class="form-control" id="drop" name="tipe" required value="{{$kategoris->tipe}}">
-                                    <option value="1" @if($kategoris->tipe==1) selected='selected' @endif>Debit</option>
-                                    <option value="-1" @if($kategoris->tipe==-1) selected='selected' @endif>Kredit</option>
+                                <label for="exampleFormControlSelect1">Satuan (Pilih Satuan)</label>
+                            <select class="form-control" id="drop" name="satuan" required value="{{$items->satuan}}">
+                                    <option value="" selected disabled hidden>Pilih Satuan</option>
+                                    <option value="pcs"  @if($items->satuan=="pcs") selected='selected' @endif>pcs</option>
+                                    <option value="lusin"  @if($items->satuan=="lusin") selected='selected' @endif>lusin</option>
+                                    <option value="dus"  @if($items->satuan=="dus") selected='selected' @endif>dus</option>
+                                    <option value="meter"  @if($items->satuan=="meter") selected='selected' @endif>meter</option>
+                                    <option value="buah"  @if($items->satuan=="buah") selected='selected' @endif>buah</option>
+                                    <option value="pepel"  @if($items->satuan=="pepel") selected='selected' @endif>pepel</option>
+                                    <option value="bulan"  @if($items->satuan=="bulan") selected='selected' @endif>bulan</option>
+                                    <option value="orang"  @if($items->satuan=="orang") selected='selected' @endif>orang</option>
+                                    <option value="liter"  @if($items->satuan=="liter") selected='selected' @endif>liter</option>
+                                    <option value="kodi"  @if($items->satuan=="kodi") selected='selected' @endif>kodi</option>
+                                    <option value="hari"  @if($items->satuan=="hari") selected='selected' @endif>hari</option>
+                                    <option value="tahun"  @if($items->satuan=="tahun") selected='selected' @endif>tahun</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="example-text-input">Harga (Masukkan Harga)</label>
+                                <input class="form-control" type="number" name="harga" id="example-text-input" required value="{{$items->harga}}" >
                             </div>
                             {{-- <div class="form-group">
-                                <label for="exampleFormControlSelect1">Status (Pilih Status Kategori)</label>
-                            <select class="form-control" id="drop" name="status" required value="{{$kategoris->status}}">
-                                    <option value="1" @if($kategoris->status==1) selected='selected' @endif>Aktif</option>
-                                    <option value="0" @if($kategoris->status==0) selected='selected' @endif>Non Aktif</option>
-                                </select>
+                                <label for="exampleFormControlSelect1">Status (Pilih Status Sub Kategori)</label>
+                            <select class="form-control" id="drop" name="status" required value="{{$items->status}}">
+                                    <option value="1" @if($items->status==1) selected='selected' @endif>Aktif</option>
+                                    <option value="0" @if($items->status==0) selected='selected' @endif>Non Aktif</option>
+                            </select>
                             </div> --}}
                             {{-- <div class="input-daterange datepicker row align-items-center">
                                 <div class="col-12">

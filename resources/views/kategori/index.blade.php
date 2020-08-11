@@ -24,15 +24,16 @@
                             @csrf
                             <div class="form-group">
                                 <label for="example-text-input">Kode (Masukkan Kode Kategori)</label>
-                                <input class="form-control" type="text" name="kode" id="example-text-input" >
+                                <input required class="form-control" type="text" name="kode" id="example-text-input" >
                             </div>
                             <div class="form-group">
                                 <label for="example-text-input">Kategori (Masukkan Nama Kategori)</label>
-                                <input class="form-control" type="text" name="nama" id="example-text-input" >
+                                <input required class="form-control" type="text" name="nama" id="example-text-input" >
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Tipe (Pilih Jenis Kategori)</label>
-                                <select class="form-control" id="drop" name="tipe">
+                                <select class="form-control" id="drop" name="tipe" required>
+                                    <option value="" selected disabled hidden>Pilih Kategori</option>
                                     <option value="1">Debit</option>
                                     <option value="-1">Kredit</option>
                                 </select>

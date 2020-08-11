@@ -13,38 +13,33 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Kategori Pendapatan dan Belanja Desa</h2>
+                                <h2 class="mb-0">Sub Kategori Pendapatan dan Belanja Desa</h2>
                             </div>
                         </div>
                     </div>
 
                     <!-- Form Cari Data Dunia -->
                     <div class="p-4 bg-secondary">
-                    <form action="/kategori/{{$kategoris->id_ktg_transaksi}}" method="POST">
+                        <form action="/subkategori" method="POST">
                             @csrf
-                            @method("PUT")
                             <div class="form-group">
-                                <label for="example-text-input">Kode (Masukkan Kode Kategori)</label>
-                            <input class="form-control" type="text" name="kode" id="example-text-input" required value="{{$kategoris->kode}}">
+                                <label for="example-text-input">Kode (Masukkan Kode Sub Kategori)</label>
+                                <input required class="form-control" type="text" name="kode_sub" id="example-text-input" >
                             </div>
                             <div class="form-group">
-                                <label for="example-text-input">Kategori (Masukkan Nama Kategori)</label>
-                                <input class="form-control" type="text" name="nama" id="example-text-input" required value="{{$kategoris->nama}}" >
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleFormControlSelect1">Tipe (Pilih Jenis Kategori)</label>
-                            <select class="form-control" id="drop" name="tipe" required value="{{$kategoris->tipe}}">
-                                    <option value="1" @if($kategoris->tipe==1) selected='selected' @endif>Debit</option>
-                                    <option value="-1" @if($kategoris->tipe==-1) selected='selected' @endif>Kredit</option>
+                                <label for="example-text-input">Kategori (Pilih Kategori yang Tersedia)</label>
+                                <select class="form-control" id="drop" name="id_ktg_transaksi" required>
+                                    <option value="" selected disabled hidden>Pilih Kategori</option>
+                                    @foreach ($kategoris as $kategori)
+                                        <option value="{{$kategori->id_ktg_transaksi}}">{{ucfirst($kategori->nama)}}</option>      
+                                    @endforeach
                                 </select>
+                                
                             </div>
-                            {{-- <div class="form-group">
-                                <label for="exampleFormControlSelect1">Status (Pilih Status Kategori)</label>
-                            <select class="form-control" id="drop" name="status" required value="{{$kategoris->status}}">
-                                    <option value="1" @if($kategoris->status==1) selected='selected' @endif>Aktif</option>
-                                    <option value="0" @if($kategoris->status==0) selected='selected' @endif>Non Aktif</option>
-                                </select>
-                            </div> --}}
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Nama Sub Kategori (Masukkan Nama Sub Kategori)</label>
+                                <input required class="form-control" type="text" name="nama_sub" id="example-text-input" >
+                            </div>
                             {{-- <div class="input-daterange datepicker row align-items-center">
                                 <div class="col-12">
                                     <div class="form-group">
@@ -73,6 +68,69 @@
                             <input type="reset" class="btn btn-outline-warning" value="Hapus">
                         </form>
                         
+                    </div>
+
+            
+                <!-- Form Cari Data Dunia -->
+                    
+
+
+                <div class="table-responsive" style="padding-right: 25px;padding-left: 25px;">
+                    <!-- Projects table -->
+                    <table id="table_import" class="table align-items-center table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Kode</th>
+                                    <th scope="col">Nama Sub</th>
+                                    <th scope="col">Ketegori</th>
+                                    <th scope="col">Tipe</th>
+                                    <th scope="col">Dibuat</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for ($i = 1; $i <= sizeof($subkategoris); $i++)
+                                    <tr>
+                                        <td>{{ $i }}</td>
+                                        <td>{{ $subkategoris[$i-1]->kode_sub }}</td>
+                                        <td> {{ $subkategoris[$i-1]->nama_sub}}</td>
+                                        <td> {{ $subkategoris[$i-1]->nama}}</td>
+                                        @if($subkategoris[$i-1]->tipe == 1)
+                                            <td>Debit</td>
+                                        @else
+                                            <td>Kredit</td>
+                                        @endif
+                                        <td> {{ $subkategoris[$i-1]->created_at }}</td>
+                                        @if($subkategoris[$i-1]->status == 1)
+                                            <td>Aktif</td>
+                                        @else
+                                            <td>Non Aktif</td>
+                                        @endif
+                                        <td>
+                                            <form action="subkategori/{{$subkategoris[$i-1]->id_sub_ktg}}/edit" method="GET">
+                                                <button type="submit" class="btn btn-info" data-container="body" data-toggle="popover" data-color="info" data-placement="top" data-content="Sunting Kategori">
+                                                    Sunting
+                                                </button>
+                                            </form>   
+                                        </td>
+                                        <td>
+                                            <form action="subkategori/{{$subkategoris[$i-1]->id_sub_ktg}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger" data-container="body" data-toggle="popover" data-color="danger" data-placement="top" data-content="Hapus Kategori">
+                                                    Hapus
+                                                  </button>
+                                                </form>  
+                                        </td>
+
+                                    
+                                    </tr>
+                                @endfor
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

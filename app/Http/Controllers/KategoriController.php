@@ -14,7 +14,7 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        $kategoris = Kategori::get();
+        $kategoris = Kategori::where('status',1)->get();
         return view('kategori.index', compact('kategoris'));
     }
 
@@ -87,7 +87,6 @@ class KategoriController extends Controller
         $kategoris->nama = $request->nama;
         $kategoris->tipe = $request->tipe;
         $kategoris->updated_at = date("Y:m:d H:i:s");
-        $kategoris->status = $request->status;
         $kategoris->save();
         return redirect('/kategori');
     }

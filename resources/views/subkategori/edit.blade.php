@@ -13,37 +13,44 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Kategori Pendapatan dan Belanja Desa</h2>
+                                <h2 class="mb-0">Sub Kategori Pendapatan dan Belanja Desa</h2>
                             </div>
                         </div>
                     </div>
 
                     <!-- Form Cari Data Dunia -->
                     <div class="p-4 bg-secondary">
-                    <form action="/kategori/{{$kategoris->id_ktg_transaksi}}" method="POST">
+                    <form action="/subkategori/{{$subkategoris->id_sub_ktg}}" method="POST">
                             @csrf
                             @method("PUT")
                             <div class="form-group">
-                                <label for="example-text-input">Kode (Masukkan Kode Kategori)</label>
-                            <input class="form-control" type="text" name="kode" id="example-text-input" required value="{{$kategoris->kode}}">
+                                <label for="example-text-input">Kode (Masukkan Kode Sub Kategori)</label>
+                            <input class="form-control" type="text" name="kode_sub" id="example-text-input" required value="{{$subkategoris->kode_sub}}">
                             </div>
+                          
                             <div class="form-group">
-                                <label for="example-text-input">Kategori (Masukkan Nama Kategori)</label>
-                                <input class="form-control" type="text" name="nama" id="example-text-input" required value="{{$kategoris->nama}}" >
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleFormControlSelect1">Tipe (Pilih Jenis Kategori)</label>
-                            <select class="form-control" id="drop" name="tipe" required value="{{$kategoris->tipe}}">
-                                    <option value="1" @if($kategoris->tipe==1) selected='selected' @endif>Debit</option>
-                                    <option value="-1" @if($kategoris->tipe==-1) selected='selected' @endif>Kredit</option>
+                                <label for="exampleFormControlSelect1">Kategori (Pilih Kategori)</label>
+                            <select class="form-control" id="drop" name="id_ktg_transaksi" required value="{{$subkategoris->id_ktg_transaksi}}">
+                                {{-- <option value="{{$subkategoris->id_ktg_transaksi}}" >{{$subkategoris->nama}}</option> --}}
+                                    @foreach ($kategoris as $kategori)
+                                        @if($kategori->id_ktg_transaksi == $subkategoris->id_ktg_transaksi)
+                                            <option selected value="{{$kategori->id_ktg_transaksi}}">{{$kategori->nama}}</option>
+                                        @else
+                                            <option value="{{$kategori->id_ktg_transaksi}}">{{ucfirst($kategori->nama)}}</option>
+                                        @endif    
+                                    @endforeach
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="example-text-input">Sub Kategori (Masukkan Nama Sub Kategori)</label>
+                                <input class="form-control" type="text" name="nama_sub" id="example-text-input" required value="{{$subkategoris->nama_sub}}" >
                             </div>
                             {{-- <div class="form-group">
-                                <label for="exampleFormControlSelect1">Status (Pilih Status Kategori)</label>
-                            <select class="form-control" id="drop" name="status" required value="{{$kategoris->status}}">
-                                    <option value="1" @if($kategoris->status==1) selected='selected' @endif>Aktif</option>
-                                    <option value="0" @if($kategoris->status==0) selected='selected' @endif>Non Aktif</option>
-                                </select>
+                                <label for="exampleFormControlSelect1">Status (Pilih Status Sub Kategori)</label>
+                            <select class="form-control" id="drop" name="status" required value="{{$subkategoris->status}}">
+                                    <option value="1" @if($subkategoris->status==1) selected='selected' @endif>Aktif</option>
+                                    <option value="0" @if($subkategoris->status==0) selected='selected' @endif>Non Aktif</option>
+                            </select>
                             </div> --}}
                             {{-- <div class="input-daterange datepicker row align-items-center">
                                 <div class="col-12">
