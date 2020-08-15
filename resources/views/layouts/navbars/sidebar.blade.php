@@ -123,33 +123,13 @@
                     <div class="collapse" id="navbar-exampless">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('profile.edit') }}">
-                                    {{ __('Asli Desa Adat') }}
+                                <a class="nav-link" href="{{ route('pendapatan.create') }}">
+                                    {{ __('Tambah Pendapatan Baru') }}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('Pengelolaan Padruwen') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('Alokasi APBD') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('Bantuan Pemkab') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('Dana Punia Pihak Ketiga') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('Lain-lain') }}
+                                <a class="nav-link" href="{{ route('pendapatan.index') }}">
+                                    {{ __('Daftar Pendapatan') }}
                                 </a>
                             </li>
                         </ul>
@@ -165,34 +145,15 @@
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('profile.edit') }}">
-                                    {{ __('Operasional Desa Adat') }}
+                                    {{ __('Tambah Pengeluaran Baru') }}
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('Baga Parahyangan') }}
+                                    {{ __('Daftar Pengeluaran') }}
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('Baga Pawongan') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('Baga Palemahan') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('Pembiayaan Desa Adat') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('Lain-lain') }}
-                                </a>
-                            </li>
+            
                         </ul>
                     </div>
                 </li>
