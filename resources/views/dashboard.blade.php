@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4">
+            {{-- <div class="col-xl-4">
                 <div class="card shadow">
                     <div class="card-header border-0">
                         <div class="row align-items-center">
@@ -191,7 +191,7 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             {{-- <div class="col-xl-4">
                 <div class="card shadow">
                     <div class="card-header border-0">
@@ -452,7 +452,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4">
+            {{-- <div class="col-xl-4">
                 <div class="card shadow">
                     <div class="card-header border-0">
                         <div class="row align-items-center">
@@ -603,7 +603,7 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         @include('layouts.footers.auth')
