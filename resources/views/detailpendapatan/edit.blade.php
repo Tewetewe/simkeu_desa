@@ -13,69 +13,83 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Pengeluaran Desa</h2>
+                                <h2 class="mb-0">Detail Transaksi Pendapatan Desa</h2>
                             </div>
                         </div>
                     </div>
 
                      <!-- Form Cari Data Dunia -->
                      <div class="p-4 bg-secondary">
-                        <form action="/pengeluaran/{{$pengeluaran->id_transaksi}}" method="POST">
+                     <form action="/detailpendapatan/edit/{{$detailtransaksi->id_detail_transaksi}}" method="POST">
+                        @method("PUT")
                             @csrf
-                            @method("PUT")
-                            <div class="form-group" {{ ($errors->has('roll'))?'has-error':'' }}>
-                                <label for="roll">Kategori Pengeluaran (Pilih Kategori Pengeluaran)</label>
-                                <select class="form-control" id="kategori" name="kategori" required value={{$pengeluaran->id_ktg_transaksi}}>
+                            {{-- <div class="form-group" {{ ($errors->has('roll'))?'has-error':'' }}>
+                                <label for="roll">Kategori Pendapatan (Pilih Kategori Pendapatan)</label>
+                                <select class="form-control" id="kategori" name="kategori" required>
+                                    <option value="" selected disabled hidden>--Pilih Kategori--</option>
                                     @foreach ($kategoris as $kategori)
-                                        @if($kategori->id_ktg_transaksi == $pengeluaran->id_ktg_transaksi)
-                                            <option selected value="{{$kategori->id_ktg_transaksi}}">{{$kategori->nama}}</option>
-                                        @else
-                                            <option value="{{$kategori->id_ktg_transaksi}}">{{ucfirst($kategori->nama)}}</option>
-                                        @endif     
+                                        <option value="{{$kategori->id_ktg_transaksi}}">{{ucfirst($kategori->nama)}}</option>      
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group"  {{ ($errors->has('name'))?'has-error':'' }}>
-                                <label for="roll">Sub Kategori Pengeluaran (Pilih Sub Kategori Pengeluaran)</label>
-                                <select class="form-control" id="subkategori" name="subkategori" value={{$pengeluaran->id_sub_ktg}}>
-                                    @if($pengeluaran->id_sub_ktg != NULL || $pengeluaran->id_sub_ktg != '' )
-                                            <option selected value="{{$pengeluaran->id_sub_ktg}}">{{$pengeluaran->nama_sub}}</option>
-                                    @endif 
+                                <label for="roll">Sub Kategori Pendapatan (Pilih Sub Kategori Pendapatan)</label>
+                                <select class="form-control" id="subkategori" name="subkategori">
                                 </select>
                             </div>
                             <div class="form-group"  {{ ($errors->has('name'))?'has-error':'' }}>
-                                <label for="roll">Sub 2 Kategori Pengeluaran (Pilih Sub 2 Kategori Pengeluaran)</label>
-                                <select class="form-control" id="sub2kategori" name="sub2kategori" value={{$pengeluaran->id_sub_2}}>
-                                    @if($pengeluaran->id_sub_2 != NULL || $pengeluaran->id_sub_2 != '' )
-                                            <option selected value="{{$pengeluaran->id_sub_2}}">{{$pengeluaran->nama_sub_2}}</option>
-                                    @endif
+                                <label for="roll">Sub 2 Kategori Pendapatan (Pilih Sub 2 Kategori Pendapatan)</label>
+                                <select class="form-control" id="sub2kategori" name="sub2kategori">
+                                </select>
+                            </div> --}}
+        
+                            <div class="form-group">
+                                <label for="example-text-input">No. Bukti (Masukkan Nomer Bukti)</label>
+                            <input required class="form-control" type="text" name="nobukti" id="example-text-input" value="{{$detailtransaksi->no_bukti_detail}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="example-text-input">Nama (Masukkan Nama Item)</label>
+                            <input required class="form-control" type="text" name="nama" id="example-text-input" value="{{$detailtransaksi->nama_item}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Harga Satuan (Masukkan Harga Satuan)</label>
+                            <input required class="form-control" type="number" name="harga" id="example-text-input" value="{{$detailtransaksi->harga}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="example-text-input">Jumlah (Masukkan Jumlah Barang)</label>
+                            <input required class="form-control" type="number" name="jumlah" id="example-text-input" value="{{$detailtransaksi->jumlah}}">
+                            </div>
+                                      <div class="form-group">
+                                <label for="example-text-input">Pilih Satuan (Pilih Satuan yang Tersedia)</label>
+                                <select class="form-control" id="drop" name="satuan" required value="{{$detailtransaksi->satuan}}">
+                                    <option value="" selected disabled hidden>Pilih Satuan</option>
+                                    <option value="pcs"  @if($detailtransaksi->satuan=="pcs") selected='selected' @endif>pcs</option>
+                                    <option value="lusin"  @if($detailtransaksi->satuan=="lusin") selected='selected' @endif>lusin</option>
+                                    <option value="dus"  @if($detailtransaksi->satuan=="dus") selected='selected' @endif>dus</option>
+                                    <option value="meter"  @if($detailtransaksi->satuan=="meter") selected='selected' @endif>meter</option>
+                                    <option value="buah"  @if($detailtransaksi->satuan=="buah") selected='selected' @endif>buah</option>
+                                    <option value="pepel"  @if($detailtransaksi->satuan=="pepel") selected='selected' @endif>pepel</option>
+                                    <option value="bulan"  @if($detailtransaksi->satuan=="bulan") selected='selected' @endif>bulan</option>
+                                    <option value="orang"  @if($detailtransaksi->satuan=="orang") selected='selected' @endif>orang</option>
+                                    <option value="liter"  @if($detailtransaksi->satuan=="liter") selected='selected' @endif>liter</option>
+                                    <option value="kodi"  @if($detailtransaksi->satuan=="kodi") selected='selected' @endif>kodi</option>
+                                    <option value="hari"  @if($detailtransaksi->satuan=="hari") selected='selected' @endif>hari</option>
+                                    <option value="tahun"  @if($detailtransaksi->satuan=="tahun") selected='selected' @endif>tahun</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="example-text-input">Nama (Masukkan Nama Pengeluaran)</label>
-                                <input required class="form-control" type="text" name="nama" id="example-text-input" required value="{{$pengeluaran->nama_trans}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="example-text-input">No. Bukti (Masukkan Nomer Bukti)</label>
-                                <input required class="form-control" type="text" name="nobukti" id="example-text-input" required value={{$pengeluaran->no_bukti}}>
-                            </div>
-                            <div class="form-group">
-                                <label for="example-text-input">Nominal (Masukkan Nominal Pengeluaran)</label>
-                                <input required class="form-control" type="number" name="nominal" id="example-text-input" required value={{($pengeluaran->nominal)*-1}}>
-                            </div>
-                            <div class="form-group">
-                                <label for="example-text-input">Tanggal Pengeluaran (Masukkan Tanggal Pengeluaran Dana)</label>
+                                <label for="example-text-input">Tanggal Penerimaan (Masukkan Tanggal Penerimaan Dana)</label>
 
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                     </div>
-                                <input class="form-control datepicker" type="text" name= "tanggal" required value={{$pengeluaran->tanggal}}>
+                                <input required class="form-control datepicker" type="text" name= "tanggal" value="{{$detailtransaksi->tanggal_detail}}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="example-text-input">Keterangan (Masukkan Keterangan Pengeluaran)</label>
-                                <input class="form-control" type="text" name="keterangan" id="example-text-input" required value="{{$pengeluaran->keterangan}}">
+                                <label for="example-text-input">Keterangan (Masukkan Keterangan Detail Pendapatan)</label>
+                            <input required class="form-control" type="text" name="keterangan" id="example-text-input" value="{{$detailtransaksi->keterangan}}" >
                             </div>
                             
                         

@@ -144,12 +144,12 @@
                     <div class="collapse" id="navbar-examplesss">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('profile.edit') }}">
+                                <a class="nav-link" href="{{ route('pengeluaran.create') }}">
                                     {{ __('Tambah Pengeluaran Baru') }}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
+                                <a class="nav-link" href="{{ route('pengeluaran.index') }}">
                                     {{ __('Daftar Pengeluaran') }}
                                 </a>
                             </li>
@@ -191,7 +191,7 @@
             <!-- Navigation -->
             <ul class="navbar-nav mb-md-3">
                 <li class="nav-item">
-                    <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html">
+                    <a class="nav-link" href="{{ url('/reportPendapatan') }}">
                         <i class="ni ni-ui-04"></i> Report Pendapatan
                     </a>
                 </li>
@@ -202,10 +202,10 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
-                        <i class="ni ni-spaceship"></i> Report Harian
+                        <i class="ni ni-spaceship"></i> Report Rekap
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
                         <i class="ni ni-spaceship"></i> Report Bulanan
                     </a>
@@ -219,7 +219,7 @@
                     <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html">
                         <i class="ni ni-ui-04"></i> Report Tahunan
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

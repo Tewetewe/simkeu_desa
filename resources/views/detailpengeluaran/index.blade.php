@@ -13,9 +13,16 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Pendapatan Desa</h2>
+                                <h2 class="mb-0">Detail {{$detailtransaksis[0]->nama_trans}}</h2>
+                                <h3 class="mb-2">{{$detailtransaksis[0]->tanggal}}</h3>
                             </div>
                         </div>
+                        <div class="row align-items-right">
+                            <div class="col-8">
+                            <a href="{{url('/detailpengeluaran/create/'.$detailtransaksis[0]->id_transaksi)}}" class="btn btn-success" data-container="body" data-toggle="popover" data-color="info" data-placement="top">Tambahan Detail Pengeluaran</a>
+                            </div>
+                        </div>
+                    
                     </div>
                     <div class="table-responsive" style="padding-right: 25px;padding-left: 25px;">
                         <!-- Projects table -->
@@ -25,75 +32,48 @@
                                         <th scope="col">No.</th>
                                         <th scope="col">No. Bukti</th>
                                         <th scope="col">Nama</th>
-                                        <th scope="col">Nominal</th>
-                                        <th scope="col">Tanggal Penerimaan</th>
-                                        <th scope="col">Tipe</th>
+                                        <th scope="col">Harga</th>
+                                        <th scope="col">Jumlah</th>
+                                        <th scope="col">Satuan</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Tanggal Pengeluaran</th>
                                         <th scope="col">Keterangan</th>
-                                        <th scope="col">Sub 2 Kategori</th>
-                                        <th scope="col">Sub Kategori</th>
-                                        <th scope="col">Kategori</th>
                                         <th scope="col">Diinput</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                         <th scope="col">Action</th>
-                                        <th scope="col">Action</th>
-                                        <th scope="col">Action</th>
-
-
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for ($i = 1; $i <= sizeof($pendapatans); $i++)
+                                    @for ($i = 1; $i <= sizeof($detailtransaksis); $i++)
                                         <tr>
                                             <td>{{ $i }}</td>
-                                            <td>{{ $pendapatans[$i-1]->no_bukti }}</td>
-                                            <td> {{ $pendapatans[$i-1]->nama_trans}}</td>
-                                            <td>  {{"Rp ".number_format($pendapatans[$i-1]->nominal,0,",",".")  }}</td>
-                                            <td> {{ $pendapatans[$i-1]->tanggal}}</td>
-                                            @if($pendapatans[$i-1]->tipe == 1)
-                                                <td>Debit</td>
-                                            @else
-                                                <td>Kredit</td>
-                                            @endif
-                                            <td> {{ $pendapatans[$i-1]->keterangan }}</td>
-                                            <td> {{ $pendapatans[$i-1]->nama_sub_2 }}</td>
-                                            <td> {{ $pendapatans[$i-1]->nama_sub}}</td>
-                                            <td> {{ $pendapatans[$i-1]->nama}}</td>
-                                            <td> {{ $pendapatans[$i-1]->created_at}}</td>
-                                            @if($pendapatans[$i-1]->status == 1)
+                                            <td>{{ $detailtransaksis[$i-1]->no_bukti_detail }}</td>
+                                            <td> {{ $detailtransaksis[$i-1]->nama_item}}</td>
+                                            <td> {{"Rp ".number_format($detailtransaksis[$i-1]->harga*-1,0,",",".")  }}</td>
+                                            <td> {{ $detailtransaksis[$i-1]->jumlah}}</td>
+                                            <td> {{ $detailtransaksis[$i-1]->satuan}}</td>
+                                            <td> {{"Rp ".number_format($pendapatans[$i-1]->subtotal*-1,0,",",".")  }}</td>
+                                            <td> {{ $detailtransaksis[$i-1]->tanggal_detail }}</td>
+                                            <td> {{ $detailtransaksis[$i-1]->keterangan }}</td>
+                                            <td> {{ $detailtransaksis[$i-1]->created_at}}</td>
+                                            @if($detailtransaksis[$i-1]->status == 1)
                                                 <td>Aktif</td>
                                             @else
                                                 <td>Non Aktif</td>
                                             @endif
                                             <td>
-                                                <form action="pendapatan/{{$pendapatans[$i-1]->id_transaksi}}/edit" method="GET">
-                                                    <button type="submit" class="btn btn-info" data-container="body" data-toggle="popover" data-color="info" data-placement="top" data-content="Sunting Kategori">
-                                                        Sunting
-                                                    </button>
-                                                </form>   
+                                                <a href="{{url('/detailpengeluaran/edit/'.$detailtransaksis[0]->id_detail_transaksi)}}" class="btn btn-info" data-container="body" data-toggle="popover" data-color="info" data-placement="top">Sunting</a>
                                             </td>
                                             <td>
-                                                <form action="pendapatan/{{$pendapatans[$i-1]->id_transaksi}}" method="POST">
+                                                <form action="/detailpengeluaran/delete/{{$detailtransaksis[$i-1]->id_detail_transaksi}}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger" data-container="body" data-toggle="popover" data-color="danger" data-placement="top" data-content="Hapus Kategori">
                                                         Hapus
                                                       </button>
-                                                    </form>  
+                                                    </form> 
                                             </td>
-                                            <td>
-                                                <form action="pendapatan/{{$pendapatans[$i-1]->id_transaksi}}" method="GET">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-success" data-container="body" data-toggle="popover" data-color="danger" data-placement="top" data-content="Hapus Kategori">
-                                                        Detail
-                                                    </button>
-                                                </form>  
-                                            </td>
-                                            <td>
-                                                <a href="{{url('/detailpendapatan/create/'.$pendapatans[0]->id_transaksi)}}" class="btn btn-success" data-container="body" data-toggle="popover" data-color="info" data-placement="top">Tambah</a> 
-                                            </td>
-    
-                                        
                                         </tr>
                                     @endfor
                                 </tbody>

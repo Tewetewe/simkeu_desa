@@ -31,10 +31,25 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('/sub2kategori', 'Sub2KategoriController');
 	Route::resource('/item', 'ItemController');
 	Route::resource('/pendapatan', 'PendapatanController');
-	Route::resource('/pengeluaran', 'DetailTransaksiController');
-	Route::resource('/detailpengeluaran', 'DetailPengeluaranController');
+	Route::resource('/pengeluaran', 'PengeluaranController');
+
+	Route::get('/detailpendapatan/create/{id}', 'PendapatanController@createDetail');
+	Route::post('/detailpendapatan/create/{id}', 'PendapatanController@storeDetail');
+	Route::get('/detailpendapatan/edit/{id}', 'PendapatanController@editDetail');
+	Route::put('/detailpendapatan/edit/{id}', 'PendapatanController@updateDetail');
+	Route::delete('/detailpendapatan/delete/{id}', 'PendapatanController@destroyDetail');
+
+	Route::get('/detailpengeluaran/create/{id}', 'PengeluaranController@createDetail');
+	Route::post('/detailpengeluaran/create/{id}', 'PengeluaranController@storeDetail');
+	Route::get('/detailpengeluaran/edit/{id}', 'PengeluaranController@editDetail');
+	Route::put('/detailpengeluaran/edit/{id}', 'PengeluaranController@updateDetail');
+	Route::delete('/detailpengeluaran/delete/{id}', 'PengeluaranController@destroyDetail');
+
 	Route::get('findSubKategori/{id}', 'PendapatanController@findSubKategori');
 	Route::get('findSub2Kategori/{id}', 'PendapatanController@findSub2Kategori');
+
+	Route::get('/reportPendapatan/filter', 'ReportController@reportPendapatanFilter');
+	Route::get('/reportPendapatan', 'ReportController@reportPendapatan');
 
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);

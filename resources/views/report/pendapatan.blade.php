@@ -13,73 +13,38 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Pengeluaran Desa</h2>
+                                <h2 class="mb-0">Report Pendapatan Desa</h2>
                             </div>
                         </div>
                     </div>
-
                      <!-- Form Cari Data Dunia -->
                      <div class="p-4 bg-secondary">
-                        <form action="/pengeluaran/{{$pengeluaran->id_transaksi}}" method="POST">
+                        <form action="/reportPendapatan/filter" method="GET">
                             @csrf
-                            @method("PUT")
                             <div class="form-group" {{ ($errors->has('roll'))?'has-error':'' }}>
-                                <label for="roll">Kategori Pengeluaran (Pilih Kategori Pengeluaran)</label>
-                                <select class="form-control" id="kategori" name="kategori" required value={{$pengeluaran->id_ktg_transaksi}}>
+                                <label for="roll">Kategori Pendapatan (Pilih Kategori Pendapatan)</label>
+                                <select class="form-control" id="kategori" name="kategori" >
+                                    <option value="">--Pilih Kategori--</option>
                                     @foreach ($kategoris as $kategori)
-                                        @if($kategori->id_ktg_transaksi == $pengeluaran->id_ktg_transaksi)
-                                            <option selected value="{{$kategori->id_ktg_transaksi}}">{{$kategori->nama}}</option>
-                                        @else
-                                            <option value="{{$kategori->id_ktg_transaksi}}">{{ucfirst($kategori->nama)}}</option>
-                                        @endif     
+                                        <option value="{{$kategori->id_ktg_transaksi}}">{{ucfirst($kategori->nama)}}</option>      
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group"  {{ ($errors->has('name'))?'has-error':'' }}>
-                                <label for="roll">Sub Kategori Pengeluaran (Pilih Sub Kategori Pengeluaran)</label>
-                                <select class="form-control" id="subkategori" name="subkategori" value={{$pengeluaran->id_sub_ktg}}>
-                                    @if($pengeluaran->id_sub_ktg != NULL || $pengeluaran->id_sub_ktg != '' )
-                                            <option selected value="{{$pengeluaran->id_sub_ktg}}">{{$pengeluaran->nama_sub}}</option>
-                                    @endif 
+                                <label for="roll">Sub Kategori Pendapatan (Pilih Sub Kategori Pendapatan)</label>
+                                <select class="form-control" id="subkategori" name="subkategori">
                                 </select>
                             </div>
                             <div class="form-group"  {{ ($errors->has('name'))?'has-error':'' }}>
-                                <label for="roll">Sub 2 Kategori Pengeluaran (Pilih Sub 2 Kategori Pengeluaran)</label>
-                                <select class="form-control" id="sub2kategori" name="sub2kategori" value={{$pengeluaran->id_sub_2}}>
-                                    @if($pengeluaran->id_sub_2 != NULL || $pengeluaran->id_sub_2 != '' )
-                                            <option selected value="{{$pengeluaran->id_sub_2}}">{{$pengeluaran->nama_sub_2}}</option>
-                                    @endif
+                                <label for="roll">Sub 2 Kategori Pendapatan (Pilih Sub 2 Kategori Pendapatan)</label>
+                                <select class="form-control" id="sub2kategori" name="sub2kategori">
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="example-text-input">Nama (Masukkan Nama Pengeluaran)</label>
-                                <input required class="form-control" type="text" name="nama" id="example-text-input" required value="{{$pengeluaran->nama_trans}}">
+                                <label for="example-text-input">Nama (Masukkan Nama Pendapatan)</label>
+                                <input class="form-control" type="text" name="nama" id="example-text-input" >
                             </div>
-                            <div class="form-group">
-                                <label for="example-text-input">No. Bukti (Masukkan Nomer Bukti)</label>
-                                <input required class="form-control" type="text" name="nobukti" id="example-text-input" required value={{$pengeluaran->no_bukti}}>
-                            </div>
-                            <div class="form-group">
-                                <label for="example-text-input">Nominal (Masukkan Nominal Pengeluaran)</label>
-                                <input required class="form-control" type="number" name="nominal" id="example-text-input" required value={{($pengeluaran->nominal)*-1}}>
-                            </div>
-                            <div class="form-group">
-                                <label for="example-text-input">Tanggal Pengeluaran (Masukkan Tanggal Pengeluaran Dana)</label>
-
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-                                    </div>
-                                <input class="form-control datepicker" type="text" name= "tanggal" required value={{$pengeluaran->tanggal}}>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="example-text-input">Keterangan (Masukkan Keterangan Pengeluaran)</label>
-                                <input class="form-control" type="text" name="keterangan" id="example-text-input" required value="{{$pengeluaran->keterangan}}">
-                            </div>
-                            
-                        
-                            {{-- <div class="input-daterange datepicker row align-items-center">
+                            <div class="input-daterange datepicker row align-items-center">
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1">Start Date (Maksimal input dimulai dari 21 Januari 2020)</label>
@@ -87,7 +52,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                             </div>
-                                            <input class="form-control datepicker" placeholder="Start date" type="text" name="startDate" value="01/21/2020">
+                                            <input class="form-control datepicker" placeholder="Start date" type="text" name="startDate" value={{$datenow}}>
                                         </div>
                                     </div>
                                 </div>
@@ -98,15 +63,69 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                             </div>
-                                            <input class="form-control datepicker" placeholder="End date" type="text" name="endDate" value="01/25/2020">
+                                            <input class="form-control datepicker" placeholder="End date" type="text" name="endDate" value={{$datenow}}>
                                         </div>
                                     </div>
                                 </div>
-                            </div> --}}
-                            <input type="submit" class="btn btn-outline-success" value="Simpan Data">
+                            </div>
+                            <input type="submit" class="btn btn-outline-success" value="Cari Data">
                             <input type="reset" class="btn btn-outline-warning" value="Hapus">
                         </form>
                         
+                    </div>
+                    <div class="table-responsive" style="padding-right: 25px;padding-left: 25px;">
+                        <!-- Projects table -->
+                        <table id="table_import" class="table align-items-center table-striped table-bordered" cellspacing="0" width="100%">
+                            <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">No. Bukti</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Nominal</th>
+                                        <th scope="col">Tanggal Penerimaan</th>
+                                        <th scope="col">Tipe</th>
+                                        <th scope="col">Keterangan</th>
+                                        <th scope="col">Sub 2 Kategori</th>
+                                        <th scope="col">Sub Kategori</th>
+                                        <th scope="col">Kategori</th>
+                                        <th scope="col">Diinput</th>
+                                        <th scope="col">Status</th>
+                                       
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for ($i = 1; $i <= sizeof($pendapatans); $i++)
+                                        <tr>
+                                            <td>{{ $i }}</td>
+                                            <td>{{ $pendapatans[$i-1]->no_bukti }}</td>
+                                            <td> {{ $pendapatans[$i-1]->nama_trans}}</td>
+                                            <td>  {{"Rp ".number_format($pendapatans[$i-1]->nominal,0,",",".")  }}</td>
+                                            <td> {{ $pendapatans[$i-1]->tanggal}}</td>
+                                            @if($pendapatans[$i-1]->tipe == 1)
+                                                <td>Debit</td>
+                                            @else
+                                                <td>Kredit</td>
+                                            @endif
+                                            <td> {{ $pendapatans[$i-1]->keterangan }}</td>
+                                            <td> {{ $pendapatans[$i-1]->nama_sub_2 }}</td>
+                                            <td> {{ $pendapatans[$i-1]->nama_sub}}</td>
+                                            <td> {{ $pendapatans[$i-1]->nama}}</td>
+                                            <td> {{ $pendapatans[$i-1]->created_at}}</td>
+                                            @if($pendapatans[$i-1]->status == 1)
+                                                <td>Aktif</td>
+                                            @else
+                                                <td>Non Aktif</td>
+                                            @endif
+                                            
+    
+                                        
+                                        </tr>
+                                    @endfor
+                                </tbody>
+                            </table>
+                        </div> 
                     </div>
                         
                     </div>

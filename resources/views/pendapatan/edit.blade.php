@@ -20,31 +20,40 @@
 
                      <!-- Form Cari Data Dunia -->
                      <div class="p-4 bg-secondary">
-                        <form action="/pendapatan/{{$pendapatan->id_pendapatan}}" method="POST">
+                        <form action="/pendapatan/{{$pendapatan->id_transaksi}}" method="POST">
                             @csrf
                             @method("PUT")
                             <div class="form-group" {{ ($errors->has('roll'))?'has-error':'' }}>
                                 <label for="roll">Kategori Pendapatan (Pilih Kategori Pendapatan)</label>
-                                <select class="form-control" id="kategori" name="kategori" required>
-                                <option value="{{$pendapatan->id_ktg_transaksi}}">{{$pendapatan->nama}}</option>
+                                <select class="form-control" id="kategori" name="kategori" required value={{$pendapatan->id_ktg_transaksi}}>
                                     @foreach ($kategoris as $kategori)
-                                        <option value="{{$kategori->id_ktg_transaksi}}">{{ucfirst($kategori->nama)}}</option>      
+                                        @if($kategori->id_ktg_transaksi == $pendapatan->id_ktg_transaksi)
+                                            <option selected value="{{$kategori->id_ktg_transaksi}}">{{$kategori->nama}}</option>
+                                        @else
+                                            <option value="{{$kategori->id_ktg_transaksi}}">{{ucfirst($kategori->nama)}}</option>
+                                        @endif     
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group"  {{ ($errors->has('name'))?'has-error':'' }}>
                                 <label for="roll">Sub Kategori Pendapatan (Pilih Sub Kategori Pendapatan)</label>
                                 <select class="form-control" id="subkategori" name="subkategori" value={{$pendapatan->id_sub_ktg}}>
+                                    @if($pendapatan->id_sub_ktg != NULL || $pendapatan->id_sub_ktg != '' )
+                                            <option selected value="{{$pendapatan->id_sub_ktg}}">{{$pendapatan->nama_sub}}</option>
+                                    @endif 
                                 </select>
                             </div>
                             <div class="form-group"  {{ ($errors->has('name'))?'has-error':'' }}>
                                 <label for="roll">Sub 2 Kategori Pendapatan (Pilih Sub 2 Kategori Pendapatan)</label>
                                 <select class="form-control" id="sub2kategori" name="sub2kategori" value={{$pendapatan->id_sub_2}}>
+                                    @if($pendapatan->id_sub_2 != NULL || $pendapatan->id_sub_2 != '' )
+                                            <option selected value="{{$pendapatan->id_sub_2}}">{{$pendapatan->nama_sub_2}}</option>
+                                    @endif
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="example-text-input">Nama (Masukkan Nama Pendapatan)</label>
-                                <input required class="form-control" type="text" name="nama" id="example-text-input" required value={{$pendapatan->nama_pend}}>
+                                <input required class="form-control" type="text" name="nama" required value="{{$pendapatan->nama_trans}}"">
                             </div>
                             <div class="form-group">
                                 <label for="example-text-input">No. Bukti (Masukkan Nomer Bukti)</label>
@@ -66,7 +75,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="example-text-input">Keterangan (Masukkan Keterangan Pendapatan)</label>
-                                <input class="form-control" type="text" name="keterangan" id="example-text-input" required value={{$pendapatan->keterangan}} >
+                                <input class="form-control" type="text" name="keterangan" required value="{{$pendapatan->keterangan}}">
                             </div>
                             
                         
