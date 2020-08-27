@@ -51,6 +51,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/reportPendapatan/filter', 'ReportController@reportPendapatanFilter');
 	Route::get('/reportPendapatan', 'ReportController@reportPendapatan');
 
+	Route::get('/reportPengeluaran/filter', 'ReportController@reportPengeluaranFilter');
+	Route::get('/reportPengeluaran', 'ReportController@reportPengeluaran');
+
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);

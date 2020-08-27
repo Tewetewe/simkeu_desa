@@ -195,16 +195,16 @@
                         <i class="ni ni-ui-04"></i> Report Pendapatan
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html">
-                        <i class="ni ni-ui-04"></i> Report Pengeluaran
+                {{-- <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/reportPengeluaran') }}">
+                        <i class="ni ni-ui-04S"></i> Report Pengeluaran
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
                         <i class="ni ni-spaceship"></i> Report Rekap
                     </a>
-                </li>
+                </li> --}}
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
                         <i class="ni ni-spaceship"></i> Report Bulanan

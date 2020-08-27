@@ -95,7 +95,71 @@ class ReportController extends Controller
         // Session::put('endDateGlobal', $endDate);
         return view('report.pendapatan', compact('pendapatans','kategoris','datenow'));
     }
+    public function reportPengeluaran()
+    {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $datenow = date('Y-m-d');
+        $kategoris = Kategori::where('tipe', -1)->where('status',1)->get();
+        $pengeluarans = DB::table('transaksi')
+                    ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                    ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                    ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                    ->select('transaksi.*', 'ktg_transaksi.nama', 'ktg_transaksi.tipe', 'sub_ktg_transaksi.nama_sub','sub_2_ktg_transaksi.nama_sub_2')
+                    ->where('ktg_transaksi.tipe', 1)->where('transaksi.status',1)
+                    ->orderBy('tanggal','desc')
+                    ->take(10)
+                    ->get();
+        return view ('report.pengeluaran', compact('datenow','kategoris','pengeluarans'));
+    }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reportPengeluaranFilter(Request $request)
+    {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $datenow = date('Y-m-d');
+        $kategoris = Kategori::where('tipe', -1)->where('status',1)->get();
+        $kategori = $request->kategori;
+        $subkategori = $request->subkategori;
+        $sub2kategori = $request->sub2kategori;
+        $nama = $request->nama;
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+
+        $query = Transaksi::query()
+                    ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                    ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                    ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                    ->where('tipe', -1)
+                    ->where('transaksi.status',1);
+        if(!empty($kategori)){
+            $query->where('transaksi.id_ktg_transaksi', '=', $kategori);
+        }
+        if(!empty($subkategori)){
+            $query->where('transaksi.id_sub_ktg', '=', $subkategori);
+        }
+        if(!empty($sub2kategori)){
+            $query->where('transaksi.id_sub_2', '=', $sub2kategori);
+        }
+        if(!empty($nama)){
+            $query->where('transaksi.nama', 'like', "%".$nama."%");
+        }
+        if(!empty($startDate) && ($endDate)){
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            $query->whereDate('transaksi.tanggal','<=',$end->format('Y-m-d'))
+            ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
+          
+        }
+        $pengeluarans = $query->get();
+        // Session::put('namaGlobal', $nama);
+        // Session::put('startDateGlobal', $startDate);
+        // Session::put('endDateGlobal', $endDate);
+        return view('report.pengeluaran', compact('pengeluarans','kategoris','datenow'));
+    }
     /**
      * Store a newly created reurce in storage.
      *
