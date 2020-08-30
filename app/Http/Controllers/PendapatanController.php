@@ -73,7 +73,8 @@ class PendapatanController extends Controller
     public function store(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        
+        $tanggal = $request->tanggal;
+        $tgl = Carbon::parse($tanggal);
         $pendapatan = new Transaksi;
         $pendapatan->id_ktg_transaksi = $request->kategori;
         if($request->subkategori != ''){
