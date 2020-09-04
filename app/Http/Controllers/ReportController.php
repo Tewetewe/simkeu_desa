@@ -35,16 +35,55 @@ class ReportController extends Controller
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $datenow = date('Y-m-d');
         $kategoris = Kategori::where('tipe', 1)->where('status',1)->get();
+        // $pendapatans = DB::table('transaksi')
+        //             ->leftJoin('detail_transaksi','detail_transaksi.id_transaksi','=', 'transaksi.id_transaksi')
+        //             ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+        //             ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+        //             ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+        //             ->select('transaksi.tanggal','transaksi.no_bukti','transaksi.nama_trans','transaksi.keterangan',
+        //                     'transaksi.nominal', 'ktg_transaksi.nama', 'ktg_transaksi.tipe', 'sub_ktg_transaksi.nama_sub',
+        //                     'sub_2_ktg_transaksi.nama_sub_2', 'detail_transaksi.tanggal_detail', 'detail_transaksi.tanggal_detail','detail_transaksi.no_bukti_detail',
+        //                     'detail_transaksi.nama_item','detail_transaksi.satuan','detail_transaksi.jumlah','detail_transaksi.harga','detail_transaksi.subtotal','detail_transaksi.keterangan_detail')
+        //             ->where('ktg_transaksi.tipe', 1)->where('transaksi.status',1)
+        //             ->orderBy('tanggal','desc')
+        //             ->take(10)
+        //             ->get();
         $pendapatans = DB::table('transaksi')
                     ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
                     ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
                     ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
-                    ->select('transaksi.*', 'ktg_transaksi.nama', 'ktg_transaksi.tipe', 'sub_ktg_transaksi.nama_sub','sub_2_ktg_transaksi.nama_sub_2')
                     ->where('ktg_transaksi.tipe', 1)->where('transaksi.status',1)
                     ->orderBy('tanggal','desc')
-                    ->take(10)
                     ->get();
-        return view ('report.pendapatan', compact('datenow','kategoris','pendapatans'));
+                $idPendapatan = [];
+                foreach ($pendapatans as $pendapatan => $value) {
+                    array_push($idPendapatan,$value->id_transaksi);
+                }
+        $detailPendapatan =  DB::table('detail_transaksi')
+        ->whereIn('id_transaksi',$idPendapatan)
+        ->get();
+        $count = 0;
+        $subtotal = 0;
+        foreach ($pendapatans as $pendapatan => $value) {
+
+            $details = [];
+            foreach($detailPendapatan as $detail=>$valueDetail){
+                if($valueDetail->id_transaksi == $value->id_transaksi){
+                    array_push($details,$valueDetail);
+                }
+            }
+            $value->detail_transaksi = $details;
+            $subtotal = $subtotal + $value->nominal;
+            $value->subtotal = $subtotal;
+        }
+        $total = DB::table('transaksi')
+        ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+        ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+        ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+        ->where('ktg_transaksi.tipe', 1)->where('transaksi.status',1)
+        ->whereYear('tanggal', $datenow)
+        ->sum('nominal');
+        return view ('report.pendapatan', compact('datenow','kategoris','pendapatans','total'));
     }
 
     /**
@@ -69,7 +108,8 @@ class ReportController extends Controller
                     ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
                     ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                     ->where('tipe', 1)
-                    ->where('transaksi.status',1);
+                    ->where('transaksi.status',1)
+                    ->orderBy('tanggal','desc');
         if(!empty($kategori)){
             $query->where('transaksi.id_ktg_transaksi', '=', $kategori);
         }
@@ -90,10 +130,57 @@ class ReportController extends Controller
           
         }
         $pendapatans = $query->get();
+        $idPendapatan = [];
+                foreach ($pendapatans as $pendapatan => $value) {
+                    array_push($idPendapatan,$value->id_transaksi);
+                }
+        $detailPendapatan =  DB::table('detail_transaksi')
+        ->whereIn('id_transaksi',$idPendapatan)
+        ->get();
+        $count = 0;
+        $subtotal = 0;
+        foreach ($pendapatans as $pendapatan => $value) {
+
+            $details = [];
+            foreach($detailPendapatan as $detail=>$valueDetail){
+                if($valueDetail->id_transaksi == $value->id_transaksi){
+                    array_push($details,$valueDetail);
+                }
+            }
+            $value->detail_transaksi = $details;
+            $subtotal = $subtotal + $value->nominal;
+            $value->subtotal = $subtotal;
+        }
+        $nominal   = Transaksi::query()
+                ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                ->where('tipe', 1)
+                ->where('transaksi.status',1);
+            if(!empty($kategori)){
+            $nominal->where('transaksi.id_ktg_transaksi', '=', $kategori);
+            }
+            if(!empty($subkategori)){
+            $nominal->where('transaksi.id_sub_ktg', '=', $subkategori);
+            }
+            if(!empty($sub2kategori)){
+            $nominal->where('transaksi.id_sub_2', '=', $sub2kategori);
+            }
+            if(!empty($nama)){
+            $nominal->where('transaksi.nama', 'like', "%".$nama."%");
+            }
+            if(!empty($startDate) && ($endDate)){
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            $nominal->whereDate('transaksi.tanggal','<=',$end->format('Y-m-d'))
+            ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
+        }
+        $total = $nominal->sum('nominal');
+
         // Session::put('namaGlobal', $nama);
         // Session::put('startDateGlobal', $startDate);
         // Session::put('endDateGlobal', $endDate);
-        return view('report.pendapatan', compact('pendapatans','kategoris','datenow'));
+        return view('report.pendapatan', compact('pendapatans','kategoris','datenow','kategori','subkategori','sub2kategori','nama', 'startDate','endDate','total'));
     }
     public function reportPengeluaran()
     {
@@ -104,12 +191,38 @@ class ReportController extends Controller
                     ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
                     ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
                     ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
-                    ->select('transaksi.*', 'ktg_transaksi.nama', 'ktg_transaksi.tipe', 'sub_ktg_transaksi.nama_sub','sub_2_ktg_transaksi.nama_sub_2')
-                    ->where('ktg_transaksi.tipe', 1)->where('transaksi.status',1)
+                    ->where('ktg_transaksi.tipe', -1)->where('transaksi.status',1)
                     ->orderBy('tanggal','desc')
-                    ->take(10)
                     ->get();
-        return view ('report.pengeluaran', compact('datenow','kategoris','pengeluarans'));
+                    $idPengeluaran = [];
+                    foreach ($pengeluarans as $pengeluaran => $value) {
+                        array_push($idPengeluaran,$value->id_transaksi);
+                    }
+            $detailPengeluaran =  DB::table('detail_transaksi')
+            ->whereIn('id_transaksi',$idPengeluaran)
+            ->get();
+            $count = 0;
+            $subtotal = 0;
+            foreach ($pengeluarans as $pengeluaran => $value) {
+    
+                $details = [];
+                foreach($detailPengeluaran as $detail=>$valueDetail){
+                    if($valueDetail->id_transaksi == $value->id_transaksi){
+                        array_push($details,$valueDetail);
+                    }
+                }
+                $value->detail_transaksi = $details;
+                $subtotal = $subtotal + $value->nominal;
+                $value->subtotal = $subtotal;
+            }
+        $total = DB::table('transaksi')
+                    ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                    ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                    ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                    ->where('ktg_transaksi.tipe', -1)->where('transaksi.status',1)
+                    ->whereYear('tanggal', $datenow)
+                    ->sum('nominal');
+        return view ('report.pengeluaran', compact('datenow','kategoris','pengeluarans','total'));
     }
 
     /**
@@ -121,7 +234,7 @@ class ReportController extends Controller
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $datenow = date('Y-m-d');
-        $kategoris = Kategori::where('tipe', -1)->where('status',1)->get();
+        $kategoris = Kategori::where('tipe', 1)->where('status',1)->get();
         $kategori = $request->kategori;
         $subkategori = $request->subkategori;
         $sub2kategori = $request->sub2kategori;
@@ -134,7 +247,8 @@ class ReportController extends Controller
                     ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
                     ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                     ->where('tipe', -1)
-                    ->where('transaksi.status',1);
+                    ->where('transaksi.status',1)
+                    ->orderBy('tanggal','desc');
         if(!empty($kategori)){
             $query->where('transaksi.id_ktg_transaksi', '=', $kategori);
         }
@@ -155,10 +269,164 @@ class ReportController extends Controller
           
         }
         $pengeluarans = $query->get();
+        $idPengeluaran = [];
+                    foreach ($pengeluarans as $pengeluaran => $value) {
+                        array_push($idPengeluaran,$value->id_transaksi);
+                    }
+            $detailPengeluaran =  DB::table('detail_transaksi')
+            ->whereIn('id_transaksi',$idPengeluaran)
+            ->get();
+            $count = 0;
+            $subtotal = 0;
+            foreach ($pengeluarans as $pengeluaran => $value) {
+    
+                $details = [];
+                foreach($detailPengeluaran as $detail=>$valueDetail){
+                    if($valueDetail->id_transaksi == $value->id_transaksi){
+                        array_push($details,$valueDetail);
+                    }
+                }
+                $value->detail_transaksi = $details;
+                $subtotal = $subtotal + $value->nominal;
+                $value->subtotal = $subtotal;
+            }
+        $nominal   = Transaksi::query()
+                ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                ->where('tipe', -1)
+                ->where('transaksi.status',1);
+            if(!empty($kategori)){
+            $nominal->where('transaksi.id_ktg_transaksi', '=', $kategori);
+            }
+            if(!empty($subkategori)){
+            $nominal->where('transaksi.id_sub_ktg', '=', $subkategori);
+            }
+            if(!empty($sub2kategori)){
+            $nominal->where('transaksi.id_sub_2', '=', $sub2kategori);
+            }
+            if(!empty($nama)){
+            $nominal->where('transaksi.nama', 'like', "%".$nama."%");
+            }
+            if(!empty($startDate) && ($endDate)){
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            $nominal->whereDate('transaksi.tanggal','<=',$end->format('Y-m-d'))
+            ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
+        }
+        $total = $nominal->sum('nominal');
         // Session::put('namaGlobal', $nama);
         // Session::put('startDateGlobal', $startDate);
         // Session::put('endDateGlobal', $endDate);
-        return view('report.pengeluaran', compact('pengeluarans','kategoris','datenow'));
+        return view('report.pengeluaran', compact('pengeluarans','kategoris','datenow','kategori','subkategori','sub2kategori','nama', 'startDate','endDate','total'));
+    }
+    public function reportTransaksi()
+    {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $datenow = date('Y-m-d');
+        $transaksis = DB::table('transaksi')
+                    ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                    ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                    ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                    ->where('transaksi.status',1)
+                    ->orderBy('tanggal','desc')
+                    ->get();
+                    $idTransaksi = [];
+                    foreach ($transaksis as $transaksi => $value) {
+                        array_push($idTransaksi,$value->id_transaksi);
+                    }
+            $detailTransaksi =  DB::table('detail_transaksi')
+            ->whereIn('id_transaksi',$idTransaksi)
+            ->get();
+            $count = 0;
+            $subtotal = 0;
+            foreach ($transaksis as $transaksi => $value) {
+
+                $details = [];
+                foreach($detailTransaksi as $detail=>$valueDetail){
+                    if($valueDetail->id_transaksi == $value->id_transaksi){
+                        array_push($details,$valueDetail);
+                    }
+                }
+                $value->detail_transaksi = $details;
+                $subtotal = $subtotal + $value->nominal;
+                $value->subtotal = $subtotal;
+            }
+        $total = DB::table('transaksi')
+                    ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                    ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                    ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                    ->where('transaksi.status',1)
+                    ->whereYear('tanggal', $datenow)
+                    ->sum('nominal');
+        return view ('report.rekap', compact('datenow','transaksis','total'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reportTransaksiFilter(Request $request)
+    {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $datenow = date('Y-m-d');
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+
+        $query = Transaksi::query()
+                    ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                    ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                    ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                    ->where('transaksi.status',1)
+                    ->orderBy('tanggal','desc');
+       
+        if(!empty($startDate) && ($endDate)){
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            $query->whereDate('transaksi.tanggal','<=',$end->format('Y-m-d'))
+            ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
+          
+        }
+        $transaksis = $query->get();
+        $idTransaksi = [];
+                    foreach ($transaksis as $transaksi => $value) {
+                        array_push($idTransaksi,$value->id_transaksi);
+                    }
+            $detailTransaksi =  DB::table('detail_transaksi')
+            ->whereIn('id_transaksi',$idTransaksi)
+            ->get();
+            $count = 0;
+            $subtotal = 0;
+            foreach ($transaksis as $transaksi => $value) {
+    
+                $details = [];
+                foreach($detailTransaksi as $detail=>$valueDetail){
+                    if($valueDetail->id_transaksi == $value->id_transaksi){
+                        array_push($details,$valueDetail);
+                    }
+                }
+                $value->detail_transaksi = $details;
+                $subtotal = $subtotal + $value->nominal;
+                $value->subtotal = $subtotal;
+            }
+        $nominal   = Transaksi::query()
+                ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                ->where('transaksi.status',1);
+           
+            if(!empty($startDate) && ($endDate)){
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            $nominal->whereDate('transaksi.tanggal','<=',$end->format('Y-m-d'))
+            ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
+        }
+        $total = $nominal->sum('nominal');
+        // Session::put('namaGlobal', $nama);
+        // Session::put('startDateGlobal', $startDate);
+        // Session::put('endDateGlobal', $endDate);
+        return view('report.rekap', compact('transaksis','datenow', 'startDate','endDate','total'));
     }
     /**
      * Store a newly created reurce in storage.

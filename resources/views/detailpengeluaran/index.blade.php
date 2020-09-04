@@ -13,7 +13,8 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Detail {{$detailtransaksis[0]->nama_trans}}</h2>
+                                <h2 class="mb-2">Detail {{$detailtransaksis[0]->nama_trans}}</h2>
+                                <h3 class="mb-2">Total Pengeluaran Detail : {{"Rp ".number_format($detailtransaksis[0]->nominal*-1,0,",",".")}}</h3>
                                 <h3 class="mb-2">{{$detailtransaksis[0]->tanggal}}</h3>
                             </div>
                         </div>
@@ -53,7 +54,7 @@
                                             <td> {{"Rp ".number_format($detailtransaksis[$i-1]->harga*-1,0,",",".")  }}</td>
                                             <td> {{ $detailtransaksis[$i-1]->jumlah}}</td>
                                             <td> {{ $detailtransaksis[$i-1]->satuan}}</td>
-                                            <td> {{"Rp ".number_format($pendapatans[$i-1]->subtotal*-1,0,",",".")  }}</td>
+                                            <td> {{"Rp ".number_format($detailtransaksis[$i-1]->subtotal*-1,0,",",".")  }}</td>
                                             <td> {{ $detailtransaksis[$i-1]->tanggal_detail }}</td>
                                             <td> {{ $detailtransaksis[$i-1]->keterangan }}</td>
                                             <td> {{ $detailtransaksis[$i-1]->created_at}}</td>

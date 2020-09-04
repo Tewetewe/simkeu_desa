@@ -13,7 +13,8 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Pendapatan Desa</h2>
+                                <h2 class="mb-2">Pendapatan Desa</h2>
+                                <h3 class="mb-2">Total Pendapatan : {{"Rp ".number_format($total,0,",",".")  }}</h3>
                             </div>
                         </div>
                     </div>
@@ -84,7 +85,7 @@
                                             <td>
                                                 <form action="pendapatan/{{$pendapatans[$i-1]->id_transaksi}}" method="GET">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-success" data-container="body" data-toggle="popover" data-color="danger" data-placement="top" data-content="Hapus Kategori">
+                                                    <button type="submit" class="btn btn-warning" data-container="body" data-toggle="popover" data-color="danger" data-placement="top" data-content="Hapus Kategori">
                                                         Detail
                                                     </button>
                                                 </form>  

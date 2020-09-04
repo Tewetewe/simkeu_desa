@@ -13,7 +13,9 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Pengeluaran Desa</h2>
+                                <h2 class="mb-2">Pengeluaran Desa</h2>
+                                <h3 class="mb-2">Total Pengeluaran : {{"Rp ".number_format($total*-1,0,",",".")  }}</h3>
+
                             </div>
                         </div>
                     </div>

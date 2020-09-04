@@ -22,6 +22,8 @@ class PendapatanController extends Controller
      */
     public function index()
     {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $datenow = date('Y');
         $pendapatans = DB::table('transaksi')
                     ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
                     ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
@@ -29,7 +31,14 @@ class PendapatanController extends Controller
                     ->select('transaksi.*', 'ktg_transaksi.nama', 'ktg_transaksi.tipe', 'sub_ktg_transaksi.nama_sub','sub_2_ktg_transaksi.nama_sub_2')
                     ->where('ktg_transaksi.tipe', 1)->where('transaksi.status',1)
                     ->get();
-        return view('pendapatan.index', compact('pendapatans'));
+        $total = DB::table('transaksi')
+                ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                ->where('ktg_transaksi.tipe', 1)->where('transaksi.status',1)
+                ->whereYear('tanggal', $datenow)
+                ->sum('nominal');
+        return view('pendapatan.index', compact('pendapatans', 'total'));
     }
 
     /**
@@ -106,7 +115,7 @@ class PendapatanController extends Controller
     {
         $detailtransaksis = DB::table('transaksi')
                         ->join('detail_transaksi','detail_transaksi.id_transaksi','=','transaksi.id_transaksi')
-                        ->select('transaksi.id_transaksi','transaksi.nama_trans','transaksi.no_bukti','transaksi.tanggal', 'detail_transaksi.*')
+                        ->select('transaksi.id_transaksi','transaksi.nama_trans','nominal','transaksi.no_bukti','transaksi.tanggal', 'detail_transaksi.*')
                         ->where('transaksi.id_transaksi', $id)
                         ->where('detail_transaksi.status',1)
                         ->get();
@@ -154,7 +163,7 @@ class PendapatanController extends Controller
         $detailtransaksi->subtotal = ($request->harga)*($request->jumlah);
         $detailtransaksi->id_transaksi = $id;
         $detailtransaksi->tanggal_detail= $tgl->format('Y-m-d');
-        $detailtransaksi->keterangan = $request->keterangan;
+        $detailtransaksi->keterangan_detail = $request->keterangan;
         $detailtransaksi->created_at = date('Y-m-d H:i:s');
         $detailtransaksi->updated_at = date('Y-m-d H:i:s');
         $detailtransaksi->status = 1;
@@ -188,7 +197,7 @@ class PendapatanController extends Controller
         $detailtransaksi->harga = $request->harga;
         $detailtransaksi->subtotal = ($request->harga)*($request->jumlah);
         $detailtransaksi->tanggal_detail= $tgl->format('Y-m-d');
-        $detailtransaksi->keterangan = $request->keterangan;
+        $detailtransaksi->keterangan_detail = $request->keterangan;
         $detailtransaksi->created_at = date('Y-m-d H:i:s');
         $detailtransaksi->updated_at = date('Y-m-d H:i:s');
         $detailtransaksi->status = 1;
@@ -216,7 +225,6 @@ class PendapatanController extends Controller
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $tanggal = $request->tanggal;
         $tgl = Carbon::parse($tanggal);
-
         $pendapatan = Transaksi::find($id);
         $pendapatan->id_ktg_transaksi = $request->kategori;
         $pendapatan->id_sub_ktg = $request->subkategori;

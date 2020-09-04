@@ -33,13 +33,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('/pendapatan', 'PendapatanController');
 	Route::resource('/pengeluaran', 'PengeluaranController');
 
-	Route::get('/detailpendapatan/create/{id}', 'PendapatanController@createDetail');
+	Route::get('/detailpendapatan/create/{id}', 'PendapatanController@createDetail')->name('createDetailPendapatan');
 	Route::post('/detailpendapatan/create/{id}', 'PendapatanController@storeDetail');
 	Route::get('/detailpendapatan/edit/{id}', 'PendapatanController@editDetail');
 	Route::put('/detailpendapatan/edit/{id}', 'PendapatanController@updateDetail');
 	Route::delete('/detailpendapatan/delete/{id}', 'PendapatanController@destroyDetail');
 
-	Route::get('/detailpengeluaran/create/{id}', 'PengeluaranController@createDetail');
+	Route::get('/detailpengeluaran/create/{id}', 'PengeluaranController@createDetail')->name('createDetailPengeluaran');
 	Route::post('/detailpengeluaran/create/{id}', 'PengeluaranController@storeDetail');
 	Route::get('/detailpengeluaran/edit/{id}', 'PengeluaranController@editDetail');
 	Route::put('/detailpengeluaran/edit/{id}', 'PengeluaranController@updateDetail');
@@ -53,6 +53,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('/reportPengeluaran/filter', 'ReportController@reportPengeluaranFilter');
 	Route::get('/reportPengeluaran', 'ReportController@reportPengeluaran');
+
+	Route::get('/reportTransaksi/filter', 'ReportController@reportTransaksiFilter');
+	Route::get('/reportTransaksi', 'ReportController@reportTransaksi');
 
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);

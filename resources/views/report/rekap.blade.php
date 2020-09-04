@@ -13,16 +13,16 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Report pengeluaran Desa</h2>
+                                <h2 class="mb-0">Report Pendapatan dan Pengeluaran Desa</h2>
                             </div>
                         </div>
                     </div>
                      <!-- Form Cari Data Dunia -->
                      <div class="p-4 bg-secondary">
-                        <form action="/reportPengeluaran/filter" method="GET">
+                        <form action="/reportTransaksi/filter" method="GET">
                             @csrf
-                            <div class="form-group" {{ ($errors->has('roll'))?'has-error':'' }}>
-                                <label for="roll">Kategori pengeluaran (Pilih Kategori pengeluaran)</label>
+                            {{-- <div class="form-group" {{ ($errors->has('roll'))?'has-error':'' }}>
+                                <label for="roll">Kategori Pendapatan (Pilih Kategori Pendapatan)</label>
                                 <select class="form-control" id="kategori" name="kategori" >
                                     <option value="">--Pilih Kategori--</option>
                                     @foreach ($kategoris as $kategori)
@@ -31,19 +31,19 @@
                                 </select>
                             </div>
                             <div class="form-group"  {{ ($errors->has('name'))?'has-error':'' }}>
-                                <label for="roll">Sub Kategori pengeluaran (Pilih Sub Kategori pengeluaran)</label>
+                                <label for="roll">Sub Kategori Pendapatan (Pilih Sub Kategori Pendapatan)</label>
                                 <select class="form-control" id="subkategori" name="subkategori">
                                 </select>
                             </div>
                             <div class="form-group"  {{ ($errors->has('name'))?'has-error':'' }}>
-                                <label for="roll">Sub 2 Kategori pengeluaran (Pilih Sub 2 Kategori pengeluaran)</label>
+                                <label for="roll">Sub 2 Kategori Pendapatan (Pilih Sub 2 Kategori Pendapatan)</label>
                                 <select class="form-control" id="sub2kategori" name="sub2kategori">
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="example-text-input">Nama (Masukkan Nama pengeluaran)</label>
+                                <label for="example-text-input">Nama (Masukkan Nama Pendapatan)</label>
                                 <input class="form-control" type="text" name="nama" id="example-text-input" >
-                            </div>
+                            </div> --}}
                             <div class="input-daterange datepicker row align-items-center">
                                 <div class="col-12">
                                     <div class="form-group">
@@ -71,13 +71,12 @@
                             <input type="submit" class="btn btn-outline-success" value="Cari Data">
                             <input type="reset" class="btn btn-outline-warning" value="Hapus">
                         </form>
-          
                         
                     </div>
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                            <h2 class="mb-2">Total Pengeluaran Desa : {{"Rp ".number_format($total*-1,0,",",".")}}</h2>
+                            <h2 class="mb-2">Total Saldo Desa : {{"Rp ".number_format($total,0,",",".")}}</h2>
                             </div>
                         </div>
                     </div>
@@ -94,43 +93,54 @@
                                         <th scope="col">Satuan</th>
                                         <th scope="col">Harga</th>
                                         <th scope="col">Subtotal</th>
-                                        <th scope="col">Total</th>
-                                        <th scope="col">Akumulasi</th>
+                                        <th scope="col">Debit</th>
+                                        <th scope="col">Kredit</th>
+                                        <th scope="col">Saldo</th>
                                         <th scope="col">Keterangan</th>
                                          
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for ($i = 1; $i <= sizeof($pengeluarans); $i++)
+                                    @for ($i = 1; $i <= sizeof($transaksis); $i++)
                                         <tr>
                                             <td>{{ $i }}</td>
-                                            <td> {{$pengeluarans[$i-1]->tanggal}}</td>
-                                            <td>{{ $pengeluarans[$i-1]->no_bukti}}</td>
-                                            <td>{{ $pengeluarans[$i-1]->nama_trans}}</td>
+                                            <td> {{$transaksis[$i-1]->tanggal}}</td>
+                                            <td>{{ $transaksis[$i-1]->no_bukti}}</td>
+                                            <td>{{ $transaksis[$i-1]->nama_trans}}</td>
                                             <td>{{''}}</td>
                                             <td>{{''}}</td>
                                             <td>{{''}}</td>
                                             <td>{{''}}</td>
-                                            <td>  {{"Rp ".number_format($pengeluarans[$i-1]->nominal*-1,0,",",".")  }}</td>
-                                            <td>  {{"Rp ".number_format($pengeluarans[$i-1]->subtotal*-1,0,",",".")  }}</td>
-                                            <td> {{ $pengeluarans[$i-1]->keterangan }}</td>
+                                            @if($transaksis[$i-1]->tipe == 1)
+                                            <td>  {{"Rp ".number_format($transaksis[$i-1]->nominal,0,",",".")  }}</td>
+                                            @else
+                                            <td>  {{''}}</td>
+                                            @endif
+                                            @if($transaksis[$i-1]->tipe == -1)
+                                            <td>  {{"Rp ".number_format($transaksis[$i-1]->nominal*-1,0,",",".")  }}</td>
+                                            @else
+                                            <td>  {{''}}</td>
+                                            @endif
+                                            <td>  {{"Rp ".number_format($transaksis[$i-1]->subtotal,0,",",".")  }}</td>
+                                            <td> {{ $transaksis[$i-1]->keterangan }}</td>
                                           
                                         </tr>
-                                        @for ($j = 0; $j < sizeof($pengeluarans[$i-1]->detail_transaksi); $j++)
+                                        @for ($j = 0; $j < sizeof($transaksis[$i-1]->detail_transaksi); $j++)
                                             <tr>
                                             <td>{{ $i }}.{{$j+1}}</td>
                                                 <td>
-                                                    {{$pengeluarans[$i-1]->detail_transaksi[$j]->tanggal_detail}}
+                                                    {{$transaksis[$i-1]->detail_transaksi[$j]->tanggal_detail}}
                                                 </td>
-                                                <td>{{ $pengeluarans[$i-1]->detail_transaksi[$j]->no_bukti_detail}}</td>
-                                                <td>{{ $pengeluarans[$i-1]->detail_transaksi[$j]->nama_item}}</td>
-                                                <td>{{$pengeluarans[$i-1]->detail_transaksi[$j]->jumlah}}</td>
-                                                <td>{{$pengeluarans[$i-1]->detail_transaksi[$j]->satuan}}</td>
-                                                <td>{{"Rp ".number_format($pengeluarans[$i-1]->detail_transaksi[$j]->harga*-1,0,",",".")  }}</td>
-                                                <td>  {{"Rp ".number_format($pengeluarans[$i-1]->detail_transaksi[$j]->subtotal*-1,0,",",".")  }}
+                                                <td>{{ $transaksis[$i-1]->detail_transaksi[$j]->no_bukti_detail}}</td>
+                                                <td>{{ $transaksis[$i-1]->detail_transaksi[$j]->nama_item}}</td>
+                                                <td>{{$transaksis[$i-1]->detail_transaksi[$j]->jumlah}}</td>
+                                                <td>{{$transaksis[$i-1]->detail_transaksi[$j]->satuan}}</td>
+                                                <td>{{$transaksis[$i-1]->detail_transaksi[$j]->harga < 0 ? "Rp ".number_format($transaksis[$i-1]->detail_transaksi[$j]->harga*-1,0,",",".") :  "Rp ".number_format($transaksis[$i-1]->detail_transaksi[$j]->harga,0,",",".")  }}</td>
+                                                <td>  {{$transaksis[$i-1]->detail_transaksi[$j]->subtotal < 0 ? "Rp ".number_format($transaksis[$i-1]->detail_transaksi[$j]->subtotal*-1,0,",",".") :  "Rp ".number_format($transaksis[$i-1]->detail_transaksi[$j]->subtotal,0,",",".") }}
                                                 <td>  {{''}}</td>
                                                 <td>  {{''}}</td>
-                                                <td> {{ $pengeluarans[$i-1]->detail_transaksi[$j]->keterangan_detail }}</td>
+                                                <td>  {{''}}</td>
+                                                <td> {{ $transaksis[$i-1]->detail_transaksi[$j]->keterangan_detail }}</td>
                                             </tr>
                                         @endfor
                                     @endfor

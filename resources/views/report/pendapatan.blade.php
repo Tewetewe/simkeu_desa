@@ -73,61 +73,70 @@
                         </form>
                         
                     </div>
+                    <div class="card-header border-0">
+                        <div class="row align-items-center">
+                            <div class="col-8">
+                            <h2 class="mb-2">Total Pendapatan Desa : {{"Rp ".number_format($total,0,",",".")}}</h2>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive" style="padding-right: 25px;padding-left: 25px;">
                         <!-- Projects table -->
                         <table id="table_import" class="table align-items-center table-striped table-bordered" cellspacing="0" width="100%">
                             <thead class="thead-light">
                                     <tr>
                                         <th scope="col">No.</th>
+                                        <th scope="col">Tanggal</th>
                                         <th scope="col">No. Bukti</th>
                                         <th scope="col">Nama</th>
-                                        <th scope="col">Nominal</th>
-                                        <th scope="col">Tanggal Penerimaan</th>
-                                        <th scope="col">Tipe</th>
+                                        <th scope="col">Jumlah</th>
+                                        <th scope="col">Satuan</th>
+                                        <th scope="col">Harga</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Akumulasi</th>
                                         <th scope="col">Keterangan</th>
-                                        <th scope="col">Sub 2 Kategori</th>
-                                        <th scope="col">Sub Kategori</th>
-                                        <th scope="col">Kategori</th>
-                                        <th scope="col">Diinput</th>
-                                        <th scope="col">Status</th>
-                                       
-
-
+                                         
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @for ($i = 1; $i <= sizeof($pendapatans); $i++)
                                         <tr>
                                             <td>{{ $i }}</td>
-                                            <td>{{ $pendapatans[$i-1]->no_bukti }}</td>
-                                            <td> {{ $pendapatans[$i-1]->nama_trans}}</td>
+                                            <td> {{$pendapatans[$i-1]->tanggal}}</td>
+                                            <td>{{ $pendapatans[$i-1]->no_bukti}}</td>
+                                            <td>{{ $pendapatans[$i-1]->nama_trans}}</td>
+                                            <td>{{''}}</td>
+                                            <td>{{''}}</td>
+                                            <td>{{''}}</td>
+                                            <td>{{''}}</td>
                                             <td>  {{"Rp ".number_format($pendapatans[$i-1]->nominal,0,",",".")  }}</td>
-                                            <td> {{ $pendapatans[$i-1]->tanggal}}</td>
-                                            @if($pendapatans[$i-1]->tipe == 1)
-                                                <td>Debit</td>
-                                            @else
-                                                <td>Kredit</td>
-                                            @endif
+                                            <td>  {{"Rp ".number_format($pendapatans[$i-1]->subtotal,0,",",".")  }}</td>
                                             <td> {{ $pendapatans[$i-1]->keterangan }}</td>
-                                            <td> {{ $pendapatans[$i-1]->nama_sub_2 }}</td>
-                                            <td> {{ $pendapatans[$i-1]->nama_sub}}</td>
-                                            <td> {{ $pendapatans[$i-1]->nama}}</td>
-                                            <td> {{ $pendapatans[$i-1]->created_at}}</td>
-                                            @if($pendapatans[$i-1]->status == 1)
-                                                <td>Aktif</td>
-                                            @else
-                                                <td>Non Aktif</td>
-                                            @endif
-                                            
-    
-                                        
+                                          
                                         </tr>
+                                        @for ($j = 0; $j < sizeof($pendapatans[$i-1]->detail_transaksi); $j++)
+                                            <tr>
+                                            <td>{{ $i }}.{{$j+1}}</td>
+                                                <td>
+                                                    {{$pendapatans[$i-1]->detail_transaksi[$j]->tanggal_detail}}
+                                                </td>
+                                                <td>{{ $pendapatans[$i-1]->detail_transaksi[$j]->no_bukti_detail}}</td>
+                                                <td>{{ $pendapatans[$i-1]->detail_transaksi[$j]->nama_item}}</td>
+                                                <td>{{$pendapatans[$i-1]->detail_transaksi[$j]->jumlah}}</td>
+                                                <td>{{$pendapatans[$i-1]->detail_transaksi[$j]->satuan}}</td>
+                                                <td>{{"Rp ".number_format($pendapatans[$i-1]->detail_transaksi[$j]->harga,0,",",".")  }}</td>
+                                                <td>  {{"Rp ".number_format($pendapatans[$i-1]->detail_transaksi[$j]->subtotal,0,",",".")  }}
+                                                <td>  {{''}}</td>
+                                                <td>  {{''}}</td>
+                                                <td> {{ $pendapatans[$i-1]->detail_transaksi[$j]->keterangan_detail }}</td>
+                                            </tr>
+                                        @endfor
                                     @endfor
                                 </tbody>
                             </table>
                         </div> 
                     </div>
-                        
                     </div>
                 </div>
             </div>

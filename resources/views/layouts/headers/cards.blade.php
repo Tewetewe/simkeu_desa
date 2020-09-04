@@ -9,7 +9,7 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Debit</h5>
-                                    <span class="h2 font-weight-bold mb-0">350,897</span>
+                                    <span class="h2 font-weight-bold mb-0"> {{"Rp ".number_format($debit,0,",",".")  }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -18,8 +18,14 @@
                                 </div>
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                                <span class="text-nowrap">Since last month</span>
+                                <span class="text-success mr-2">
+                                    @if($lastDebit >= 0)
+                                    <i class="fa fa-arrow-up">
+                                    @else
+                                    <i class="fa fa-arrow-down">
+                                    @endif
+                                    </i>{{"Rp ".number_format($lastDebit,0,",",".")  }}</i></span>
+                                <span class="text-nowrap">Sejak Transaksi Terakhir</span>
                             </p>
                         </div>
                     </div>
@@ -29,8 +35,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">KREDIT</h5>
-                                    <span class="h2 font-weight-bold mb-0">2,356</span>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Kredit</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{"Rp ".number_format($kredit*-1,0,",",".")  }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -39,8 +45,14 @@
                                 </div>
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>
-                                <span class="text-nowrap">Since last week</span>
+                                <span class="text-danger mr-2">
+                                    @if($lastKredit >= 0)
+                                    <i class="fa fa-arrow-up">
+                                    @else
+                                    <i class="fa fa-arrow-down">
+                                    @endif
+                                    </i>{{"Rp ".number_format($lastKredit*-1,0,",",".")  }}</span>
+                                <span class="text-nowrap">Sejak Transaksi Terakhir</span>
                             </p>
                         </div>
                     </div>
@@ -51,7 +63,7 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">SALDO</h5>
-                                    <span class="h2 font-weight-bold mb-0">348,541</span>
+                                    <span class="h2 font-weight-bold mb-0">{{"Rp ".number_format($saldo,0,",",".")  }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -60,8 +72,14 @@
                                 </div>
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
-                                <span class="text-nowrap">Since yesterday</span>
+                                <span class="text-warning mr-2">
+                                    @if($lastSaldo >= 0)
+                                    <i class="fa fa-arrow-up">
+                                    @else
+                                    <i class="fa fa-arrow-down">
+                                    @endif
+                                        </i>{{"Rp ".number_format($lastSaldo,0,",",".")  }}</span>
+                                <span class="text-nowrap">Sejak Transaksi Terakhir</span>
                             </p>
                         </div>
                     </div>
@@ -71,8 +89,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">LABA TOYA</h5>
-                                    <span class="h2 font-weight-bold mb-0">49,65%</span>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">RATIO PENDAPATAN</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{$ratio}} %<span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-info text-white rounded-circle shadow">
@@ -81,8 +99,14 @@
                                 </div>
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
-                                <span class="text-nowrap">Since last month</span>
+                            <span class="text-success mr-2">
+                                @if($lastRatio >= 0)
+                                <i class="fa fa-arrow-up">
+                                @else
+                                <i class="fa fa-arrow-down">
+                                @endif
+                                    </i>{{$lastRatio}} %</span>
+                                <span class="text-nowrap">Sejak Transaksi Terakhir</span>
                             </p>
                         </div>
                     </div>

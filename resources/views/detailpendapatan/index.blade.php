@@ -13,7 +13,8 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h2 class="mb-0">Detail {{$detailtransaksis[0]->nama_trans}}</h2>
+                                <h2 class="mb-2">Detail {{$detailtransaksis[0]->nama_trans}}</h2>
+                                <h3 class="mb-2">Total Pendapatan Detail : {{"Rp ".number_format($detailtransaksis[0]->nominal,0,",",".")}}</h3>
                                 <h3 class="mb-2">{{$detailtransaksis[0]->tanggal}}</h3>
                             </div>
                         </div>
