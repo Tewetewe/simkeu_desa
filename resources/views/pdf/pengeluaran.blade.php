@@ -18,7 +18,7 @@
 	</style>
 	<center>
 		<h4>Laporan Pengeluaran Desa Adat Ketewel</h4>
-        <h5>{{$kategoriNama->nama != '' || $kategoriNama != NULL ? $kategoriNama->nama : 'Rekap Semua Pengeluaran Desa Adat' }}</h5>
+        <h5>{{$kategoriNama != '' || $kategoriNama != NULL ? $kategoriNama->nama : 'Rekap Semua Pengeluaran Desa Adat' }}</h5>
         <h6>{{$subkategoriNama != '' || $subkategoriNama != NULL ? $subkategoriNama->nama_sub : '' }}</h6>
         <h6>{{$sub2kategoriNama != '' || $sub2kategoriNama != NULL ? $sub2kategoriNama->nama_sub_2 : '' }}</h6>
         <h6>{{$nama != '' || $nama != NULL ? $nama : '' }}</h6>

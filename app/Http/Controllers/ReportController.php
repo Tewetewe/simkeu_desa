@@ -196,7 +196,18 @@ class ReportController extends Controller
         $nama = Session::get('namaPendapatan');
         $startDate= Session::get('startDatePendapatan');
         $endDate = Session::get('endDatePendapatan');
-
+        if ($startDate == NULL ) {
+            $startDate = $datenow;
+        }
+        else{
+            $startDate = $startDate;
+        }
+        if ($endDate == NULL ) {
+            $endDate = $datenow;
+        }
+        else{
+            $endDate = $endDate;
+        }
         $query = Transaksi::query()
                     ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
                     ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
@@ -275,7 +286,7 @@ class ReportController extends Controller
         $sub2kategoriNama = Sub2Kategori::select('nama_sub_2')->where('id_sub_2', $sub2kategori)->first();
         $startDateNew = date('d F Y', strtotime($startDate));
         $endDateNew = date('d F Y', strtotime($endDate));
-
+        $nama_file = 'laporan_pendapatan_'.date('Y-m-d').'.pdf';
         // Session::put('kategoriPendapatan', $kategori);
         // Session::put('subKategoriPendapatan', $subkategori);
         // Session::put('sub2KategoriPendapatan', $sub2kategori);
@@ -283,7 +294,7 @@ class ReportController extends Controller
         // Session::put('startDatePendapatan', $startDate);
         // Session::put('endDatePendapatan', $endDate);
         $pdf = PDF::loadview('pdf.pendapatan',compact('pendapatans','kategoriNama','subkategoriNama','sub2kategoriNama','nama', 'startDateNew','endDateNew','total'));
-	    return $pdf->stream();
+	    return $pdf->stream($nama_file);
     }
     public function reportPengeluaran()
     {
@@ -437,6 +448,20 @@ class ReportController extends Controller
         $startDate= Session::get('startDatePengeluaran');
         $endDate = Session::get('endDatePengeluaran');
 
+        if ($startDate == NULL ) {
+            $startDate = $datenow;
+        }
+        else{
+            $startDate = $startDate;
+        }
+        if ($endDate == NULL ) {
+            $endDate = $datenow;
+        }
+        else{
+            $endDate = $endDate;
+        }
+
+
         $query = Transaksi::query()
                     ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
                     ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
@@ -516,6 +541,8 @@ class ReportController extends Controller
         $sub2kategoriNama = Sub2Kategori::select('nama_sub_2')->where('id_sub_2', $sub2kategori)->first();
         $startDateNew = date('d F Y', strtotime($startDate));
         $endDateNew = date('d F Y', strtotime($endDate));
+        $nama_file = 'laporan_pengeluaran_'.date('Y-m-d').'.pdf';
+
 
         // Session::put('kategoriPengeluaran', $kategori);
         // Session::put('subKategoriPengeluaran', $subkategori);
@@ -524,7 +551,7 @@ class ReportController extends Controller
         // Session::put('startDatePengeluaran', $startDate);
         // Session::put('endDatePengeluaran', $endDate);
         $pdf = PDF::loadview('pdf.pengeluaran',compact('pengeluarans','kategoriNama','subkategoriNama','sub2kategoriNama','nama', 'startDateNew','endDateNew','total'));
-	    return $pdf->stream();
+	    return $pdf->stream($nama_file);
     }
     public function reportTransaksi()
     {
@@ -639,6 +666,18 @@ class ReportController extends Controller
         $endDate = Session::get('endDateTransaksi');
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $datenow = date('Y-m-d');
+        if ($startDate == NULL ) {
+            $startDate = $datenow;
+        }
+        else{
+            $startDate = $startDate;
+        }
+        if ($endDate == NULL ) {
+            $endDate = $datenow;
+        }
+        else{
+            $endDate = $endDate;
+        }
   
 
         $query = Transaksi::query()
@@ -693,9 +732,11 @@ class ReportController extends Controller
         $total = $nominal->sum('nominal');
         $startDateNew = date('d F Y', strtotime($startDate));
         $endDateNew = date('d F Y', strtotime($endDate));
+        $nama_file = 'laporan_rekap_'.date('Y-m-d').'.pdf';
+
 
         $pdf = PDF::loadview('pdf.rekap',compact('transaksis', 'startDateNew','endDateNew','total'));
-	    return $pdf->stream();
+	    return $pdf->stream($nama_file);
     }
     /**
      * Store a newly created reurce in storage.

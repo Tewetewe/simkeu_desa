@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-if (env('APP_ENV') === 'local') {
-    URL::forceSchema('https');
-}
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -28,24 +26,24 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'UserController', ['except' => ['show']]);
-	Route::resource('/kategori', 'KategoriController');
-	Route::resource('/subkategori', 'SubKategoriController');
-	Route::resource('/sub2kategori', 'Sub2KategoriController');
-	Route::resource('/item', 'ItemController');
-	Route::resource('/pendapatan', 'PendapatanController');
-	Route::resource('/pengeluaran', 'PengeluaranController');
+	Route::resource('/kategori', 'KategoriController')->middleware('admin');
+	Route::resource('/subkategori', 'SubKategoriController')->middleware('admin');
+	Route::resource('/sub2kategori', 'Sub2KategoriController')->middleware('admin');
+	Route::resource('/item', 'ItemController')->middleware('admin');
+	Route::resource('/pendapatan', 'PendapatanController')->middleware('admin');
+	Route::resource('/pengeluaran', 'PengeluaranController')->middleware('admin');
 
-	Route::get('/detailpendapatan/create/{id}', 'PendapatanController@createDetail')->name('createDetailPendapatan');
-	Route::post('/detailpendapatan/create/{id}', 'PendapatanController@storeDetail');
-	Route::get('/detailpendapatan/edit/{id}', 'PendapatanController@editDetail');
-	Route::put('/detailpendapatan/edit/{id}', 'PendapatanController@updateDetail');
-	Route::delete('/detailpendapatan/delete/{id}', 'PendapatanController@destroyDetail');
+	Route::get('/detailpendapatan/create/{id}', 'PendapatanController@createDetail')->name('createDetailPendapatan')->middleware('admin');
+	Route::post('/detailpendapatan/create/{id}', 'PendapatanController@storeDetail')->middleware('admin');
+	Route::get('/detailpendapatan/edit/{id}', 'PendapatanController@editDetail')->middleware('admin');
+	Route::put('/detailpendapatan/edit/{id}', 'PendapatanController@updateDetail')->middleware('admin');
+	Route::delete('/detailpendapatan/delete/{id}', 'PendapatanController@destroyDetail')->middleware('admin');
 
-	Route::get('/detailpengeluaran/create/{id}', 'PengeluaranController@createDetail')->name('createDetailPengeluaran');
-	Route::post('/detailpengeluaran/create/{id}', 'PengeluaranController@storeDetail');
-	Route::get('/detailpengeluaran/edit/{id}', 'PengeluaranController@editDetail');
-	Route::put('/detailpengeluaran/edit/{id}', 'PengeluaranController@updateDetail');
-	Route::delete('/detailpengeluaran/delete/{id}', 'PengeluaranController@destroyDetail');
+	Route::get('/detailpengeluaran/create/{id}', 'PengeluaranController@createDetail')->name('createDetailPengeluaran')->middleware('admin');
+	Route::post('/detailpengeluaran/create/{id}', 'PengeluaranController@storeDetail')->middleware('admin');
+	Route::get('/detailpengeluaran/edit/{id}', 'PengeluaranController@editDetail')->middleware('admin');
+	Route::put('/detailpengeluaran/edit/{id}', 'PengeluaranController@updateDetail')->middleware('admin');
+	Route::delete('/detailpengeluaran/delete/{id}', 'PengeluaranController@destroyDetail')->middleware('admin');
 
 	Route::get('findSubKategori/{id}', 'PendapatanController@findSubKategori');
 	Route::get('findSub2Kategori/{id}', 'PendapatanController@findSub2Kategori');

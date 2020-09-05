@@ -83,12 +83,13 @@
                         <i class="ni ni-tv-2 text-primary"></i> {{ __('Dashboard') }}
                     </a>
                 </li>
+                @if( auth()->user()->role == "admin" )
+
                 <li class="nav-item">
                     <a class="nav-link active" href="#navbar-examples" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-examples">
                         <i class="fab fa-laravel" style="color: #f18902;"></i>
                         <span class="nav-link-text" style="color: #f18902;">{{ __('Master Data') }}</span>
                     </a>
-
                     <div class="collapse" id="navbar-examples">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
@@ -157,6 +158,7 @@
                         </ul>
                     </div>
                 </li>
+                @endif
 
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="#">
