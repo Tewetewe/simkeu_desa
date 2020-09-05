@@ -47,7 +47,7 @@
                             <div class="input-daterange datepicker row align-items-center">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="exampleFormControlSelect1">Start Date (Maksimal input dimulai dari 21 Januari 2020)</label>
+                                        <label for="exampleFormControlSelect1">Start Date (Maksimal input dimulai dari transaksi pertama)</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
@@ -70,6 +70,7 @@
                             </div>
                             <input type="submit" class="btn btn-outline-success" value="Cari Data">
                             <input type="reset" class="btn btn-outline-warning" value="Hapus">
+                            <a href="/reportPengeluaran/pdf" class="btn btn-success my-3" target="_blank">Export PDF</a>
                         </form>
           
                         

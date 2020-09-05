@@ -8,6 +8,7 @@ use App\Sub2Kategori;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\DetailTransaksi;
+use Session;
 
 class HomeController extends Controller
 {
@@ -93,7 +94,7 @@ class HomeController extends Controller
                     ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
                     ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
                     ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
-                    ->select('transaksi.*', 'ktg_transaksi.nama', 'ktg_transaksi.tipe', 'sub_ktg_transaksi.nama_sub','sub_2_ktg_transaksi.nama_sub_2')
+                    ->select('transaksi.nama_trans', 'transaksi.nominal')
                     ->where('ktg_transaksi.tipe', 1)->where('transaksi.status',1)
                     ->take(10)
                     ->get();
@@ -101,10 +102,83 @@ class HomeController extends Controller
                     ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
                     ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
                     ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
-                    ->select('transaksi.*', 'ktg_transaksi.nama', 'ktg_transaksi.tipe', 'sub_ktg_transaksi.nama_sub','sub_2_ktg_transaksi.nama_sub_2')
+                    ->select('transaksi.nama_trans', 'transaksi.nominal')
                     ->where('ktg_transaksi.tipe', -1)->where('transaksi.status',1)
                     ->take(10)
                     ->get();
-        return view('dashboard',compact('debit','kredit','lastDebit','lastKredit','lastRatio','lastSaldo','saldo','ratio','pendapatans','pengeluarans'));
+            
+        
+        $dataPendapatanHarian = Transaksi::select(DB::raw('transaksi.tanggal, SUM(transaksi.nominal) as nominal'))
+                        ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                        ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                        ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                        ->where('ktg_transaksi.tipe', 1)->where('transaksi.status',1)
+                        ->whereYear('tanggal', $datenow)
+                        ->orderBy('transaksi.tanggal','ASC')
+                        ->groupBy('transaksi.tanggal')
+                        ->get();
+
+        
+        $dataPendapatanBulanan = Transaksi::select(DB::raw('MONTH(tanggal) as bulanPendapatan, SUM(transaksi.nominal) as nominal'))
+                        ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                        ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                        ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                        ->where('ktg_transaksi.tipe', 1)->where('transaksi.status',1)
+                        ->whereYear('tanggal', $datenow)
+                        ->groupBy(DB::raw('MONTH(transaksi.tanggal)'))
+                        ->orderBy((DB::raw('MONTH(tanggal)','ASC')))
+                        ->get();
+
+        $tanggalPendapatan = array();
+        $nominalPendapatan = array();
+        for ($i=0; $i < count($dataPendapatanHarian); $i++) {
+            array_push($tanggalPendapatan, date('d-F', strtotime($dataPendapatanHarian[$i]->tanggal)));
+            array_push($nominalPendapatan, $dataPendapatanHarian[$i]->nominal);
+        }
+
+        $tanggalPendapatanBulanan = array();
+        $nominalPendapatanBulanan = array();
+        for ($i=0; $i < count($dataPendapatanBulanan); $i++) {
+            array_push($tanggalPendapatanBulanan,  date('F', mktime(0, 0, 0, $dataPendapatanBulanan[$i]->bulanPendapatan, 10)));
+            array_push($nominalPendapatanBulanan, $dataPendapatanBulanan[$i]->nominal);
+        }
+
+        $dataPengeluaranHarian = Transaksi::select(DB::raw('transaksi.tanggal, SUM(transaksi.nominal) as nominal'))
+                        ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                        ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                        ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                        ->where('ktg_transaksi.tipe', -1)->where('transaksi.status',1)
+                        ->whereYear('tanggal', $datenow)
+                        ->orderBy('transaksi.tanggal','ASC')
+                        ->groupBy('transaksi.tanggal')
+                        ->get();
+        
+        $dataPengeluaranBulanan = Transaksi::select(DB::raw('MONTH(tanggal) as bulanPengeluaran, SUM(transaksi.nominal) as nominal'))
+                        ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                        ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                        ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                        ->where('ktg_transaksi.tipe', -1)->where('transaksi.status',1)
+                        ->whereYear('tanggal', $datenow)
+                        ->groupBy( DB::raw('MONTH(transaksi.tanggal)'))
+                        ->orderBy((DB::raw('MONTH(tanggal)','ASC')))
+                        ->get();
+
+        $tanggalPengeluaran = array();
+        $nominalPengeluaran = array();
+        for ($i=0; $i < count($dataPengeluaranHarian); $i++) {
+            array_push($tanggalPengeluaran, date('d-F', strtotime($dataPengeluaranHarian[$i]->tanggal)));
+            array_push($nominalPengeluaran, $dataPengeluaranHarian[$i]->nominal*-1);
+        }
+        
+        $tanggalPengeluaranBulanan = array();
+        $nominalPengeluaranBulanan = array();
+        for ($i=0; $i < count($dataPengeluaranBulanan); $i++) {
+            array_push($tanggalPengeluaranBulanan, date('F', mktime(0, 0, 0, $dataPengeluaranBulanan[$i]->bulanPengeluaran, 10)));
+            array_push($nominalPengeluaranBulanan, $dataPengeluaranBulanan[$i]->nominal*-1);
+        }
+         
+
+        return view('dashboard',compact('debit','kredit','lastDebit','lastKredit','tanggalPendapatan','tanggalPengeluaran','nominalPendapatan','nominalPengeluaran',
+        'lastRatio','lastSaldo','saldo','ratio','pendapatans','pengeluarans','tanggalPendapatan','nominalPendapatan','tanggalPengeluaran','nominalPengeluaran','tanggalPendapatanBulanan','nominalPendapatanBulanan','tanggalPengeluaranBulanan','nominalPengeluaranBulanan'));
     }
 }

@@ -46,7 +46,7 @@
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
                                 <span class="text-danger mr-2">
-                                    @if($lastKredit >= 0)
+                                    @if($lastKredit <= 0)
                                     <i class="fa fa-arrow-up">
                                     @else
                                     <i class="fa fa-arrow-down">
