@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-if (env('APP_ENV') === 'production') {
+if (env('APP_ENV') === 'local') {
     URL::forceSchema('https');
 }
 Route::get('/', function () {
