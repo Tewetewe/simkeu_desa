@@ -613,7 +613,10 @@ class ReportController extends Controller
                     ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                     ->where('transaksi.status',1)
                     ->orderBy('tanggal','ASC');
-       
+        
+        if(!empty($nama)){
+                $nominal->where('transaksi.nama', $nama);
+        }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
             $end = Carbon::parse($endDate);
@@ -648,7 +651,9 @@ class ReportController extends Controller
                 ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
                 ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                 ->where('transaksi.status',1);
-           
+            if(!empty($nama)){
+                    $nominal->where('transaksi.nama',$nama);
+            }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
             $end = Carbon::parse($endDate);
@@ -686,7 +691,9 @@ class ReportController extends Controller
                     ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                     ->where('transaksi.status',1)
                     ->orderBy('tanggal','ASC');
-       
+        if(!empty($nama)){
+            $query->where('transaksi.nama', $nama);
+        }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
             $end = Carbon::parse($endDate);
@@ -722,7 +729,9 @@ class ReportController extends Controller
                 ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
                 ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                 ->where('transaksi.status',1);
-           
+                if(!empty($nama)){
+                    $query->where('transaksi.nama', $nama);
+                }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
             $end = Carbon::parse($endDate);

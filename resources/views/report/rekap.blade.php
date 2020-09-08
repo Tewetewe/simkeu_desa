@@ -21,29 +21,11 @@
                      <div class="p-4 bg-secondary">
                         <form action="/reportTransaksi/filter" method="GET">
                             @csrf
-                            {{-- <div class="form-group" {{ ($errors->has('roll'))?'has-error':'' }}>
-                                <label for="roll">Kategori Pendapatan (Pilih Kategori Pendapatan)</label>
-                                <select class="form-control" id="kategori" name="kategori" >
-                                    <option value="">--Pilih Kategori--</option>
-                                    @foreach ($kategoris as $kategori)
-                                        <option value="{{$kategori->id_ktg_transaksi}}">{{ucfirst($kategori->nama)}}</option>      
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group"  {{ ($errors->has('name'))?'has-error':'' }}>
-                                <label for="roll">Sub Kategori Pendapatan (Pilih Sub Kategori Pendapatan)</label>
-                                <select class="form-control" id="subkategori" name="subkategori">
-                                </select>
-                            </div>
-                            <div class="form-group"  {{ ($errors->has('name'))?'has-error':'' }}>
-                                <label for="roll">Sub 2 Kategori Pendapatan (Pilih Sub 2 Kategori Pendapatan)</label>
-                                <select class="form-control" id="sub2kategori" name="sub2kategori">
-                                </select>
-                            </div>
+                           
                             <div class="form-group">
-                                <label for="example-text-input">Nama (Masukkan Nama Pendapatan)</label>
+                                <label for="example-text-input">Nama (Masukkan Nama Transaksi)</label>
                                 <input class="form-control" type="text" name="nama" id="example-text-input" >
-                            </div> --}}
+                            </div>
                             <div class="input-daterange datepicker row align-items-center">
                                 <div class="col-12">
                                     <div class="form-group">
