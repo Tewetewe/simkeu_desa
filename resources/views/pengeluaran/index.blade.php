@@ -90,7 +90,7 @@
                                                 </form>
                                             </td>
                                             <td>
-                                                <a href="{{url('/detailpengeluaran/create/'.$pengeluarans[0]->id_transaksi)}}" class="btn btn-success" data-container="body" data-toggle="popover" data-color="info" data-placement="top">Tambah</a> 
+                                                <a href="{{url('/detailpengeluaran/create/'.$pengeluarans[$i-1]->id_transaksi)}}" class="btn btn-success" data-container="body" data-toggle="popover" data-color="info" data-placement="top">Tambah</a> 
                                             </td>
     
                                         

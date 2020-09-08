@@ -91,7 +91,7 @@
                                                 </form>  
                                             </td>
                                             <td>
-                                                <a href="{{url('/detailpendapatan/create/'.$pendapatans[0]->id_transaksi)}}" class="btn btn-success" data-container="body" data-toggle="popover" data-color="info" data-placement="top">Tambah</a> 
+                                                <a href="{{url('/detailpendapatan/create/'.$pendapatans[$i-1]->id_transaksi)}}" class="btn btn-success" data-container="body" data-toggle="popover" data-color="info" data-placement="top">Tambah</a> 
                                             </td>
     
                                         
