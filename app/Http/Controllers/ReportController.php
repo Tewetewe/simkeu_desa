@@ -615,7 +615,7 @@ class ReportController extends Controller
                     ->orderBy('tanggal','ASC');
         
         if(!empty($nama)){
-                $nominal->where('transaksi.nama', $nama);
+                $nominal->where('transaksi.nama_trans', $nama);
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -652,7 +652,7 @@ class ReportController extends Controller
                 ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                 ->where('transaksi.status',1);
             if(!empty($nama)){
-                    $nominal->where('transaksi.nama',$nama);
+                    $nominal->where('transaksi.nama_trans',$nama);
             }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -692,7 +692,7 @@ class ReportController extends Controller
                     ->where('transaksi.status',1)
                     ->orderBy('tanggal','ASC');
         if(!empty($nama)){
-            $query->where('transaksi.nama', $nama);
+            $query->where('transaksi.nama_trans', $nama);
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -730,7 +730,7 @@ class ReportController extends Controller
                 ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                 ->where('transaksi.status',1);
                 if(!empty($nama)){
-                    $query->where('transaksi.nama', $nama);
+                    $query->where('transaksi.nama_trans', $nama);
                 }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
