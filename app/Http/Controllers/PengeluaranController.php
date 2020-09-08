@@ -93,7 +93,7 @@ class PengeluaranController extends Controller
         $detailtransaksi->satuan = $request->satuan;
         $detailtransaksi->jumlah = $request->jumlah;
         $transaksi = $detailtransaksi->id_transaksi;
-        $detailtransaksi->harga = $request->harga;
+        $detailtransaksi->harga = ($request->harga)*-1;
         $detailtransaksi->subtotal = ($request->harga)*($request->jumlah)*-1;
         $detailtransaksi->tanggal_detail= $tgl->format('Y-m-d');
         $detailtransaksi->keterangan_detail = $request->keterangan;
