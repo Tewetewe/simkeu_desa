@@ -116,6 +116,13 @@ class PengeluaranController extends Controller
         $transaksi = $detailtransaksi->id_transaksi;
         $detailtransaksi->status = 0;
         $detailtransaksi->save();
+        $total = DB::table('detail_transaksi')
+                ->where('detail_transaksi.id_transaksi',$transaksi)
+                ->where('detail_transaksi.status',1)
+                ->sum('subtotal');
+        $updateTotal = Transaksi::find($transaksi);
+        $updateTotal->nominal = $total;
+        $updateTotal->save();
         return redirect()->to('pengeluaran/'.$transaksi);
     }
 
