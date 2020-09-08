@@ -18,7 +18,7 @@
 	</style>
 	<center>
 		<h4>Laporan Transaksi Desa Adat Ketewel</h4>
-        <h5>{{$nama != '' || $nama != NULL ? $kategoriNama->nama : 'Rekap Semua Transaksi Desa Adat' }}</h5>
+        <h5>{{$nama != '' || $nama != NULL ? $nama : 'Rekap Semua Transaksi Desa Adat' }}</h5>
          <h5>{{$startDateNew}} - {{$endDateNew}}</h5>
 
     </center>

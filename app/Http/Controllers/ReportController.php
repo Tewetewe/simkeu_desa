@@ -122,7 +122,7 @@ class ReportController extends Controller
             $query->where('transaksi.id_sub_2', '=', $sub2kategori);
         }
         if(!empty($nama)){
-            $query->where('transaksi.nama', 'like', "%".$nama."%");
+            $query->where('transaksi.nama_trans', $nama);
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -169,7 +169,7 @@ class ReportController extends Controller
             $nominal->where('transaksi.id_sub_2', '=', $sub2kategori);
             }
             if(!empty($nama)){
-            $nominal->where('transaksi.nama', 'like', "%".$nama."%");
+            $nominal->where('transaksi.nama_trans', $nama);
             }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -225,7 +225,7 @@ class ReportController extends Controller
             $query->where('transaksi.id_sub_2', '=', $sub2kategori);
         }
         if(!empty($nama)){
-            $query->where('transaksi.nama', 'like', "%".$nama."%");
+            $query->where('transaksi.nama_trans', $nama);
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -272,7 +272,7 @@ class ReportController extends Controller
             $nominal->where('transaksi.id_sub_2', '=', $sub2kategori);
             }
             if(!empty($nama)){
-            $nominal->where('transaksi.nama', 'like', "%".$nama."%");
+            $nominal->where('transaksi.nama_trans',$nama);
             }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -373,7 +373,7 @@ class ReportController extends Controller
             $query->where('transaksi.id_sub_2', '=', $sub2kategori);
         }
         if(!empty($nama)){
-            $query->where('transaksi.nama', 'like', "%".$nama."%");
+            $query->where('transaksi.nama_trans', $nama);
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -420,7 +420,7 @@ class ReportController extends Controller
             $nominal->where('transaksi.id_sub_2', '=', $sub2kategori);
             }
             if(!empty($nama)){
-            $nominal->where('transaksi.nama', 'like', "%".$nama."%");
+            $nominal->where('transaksi.nama_trans', $nama);
             }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -479,7 +479,7 @@ class ReportController extends Controller
             $query->where('transaksi.id_sub_2', '=', $sub2kategori);
         }
         if(!empty($nama)){
-            $query->where('transaksi.nama', 'like', "%".$nama."%");
+            $query->where('transaksi.nama_trans',$nama);
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -527,7 +527,7 @@ class ReportController extends Controller
             $nominal->where('transaksi.id_sub_2', '=', $sub2kategori);
             }
             if(!empty($nama)){
-            $nominal->where('transaksi.nama', 'like', "%".$nama."%");
+            $nominal->where('transaksi.nama_trans',$nama);
             }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
