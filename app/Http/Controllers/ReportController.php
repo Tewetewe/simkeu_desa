@@ -604,6 +604,7 @@ class ReportController extends Controller
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $datenow = date('Y-m-d');
+        $nama = $request->nama;
         $startDate = $request->startDate;
         $endDate = $request->endDate;
 
@@ -663,12 +664,16 @@ class ReportController extends Controller
         $total = $nominal->sum('nominal');
         Session::put('startDateTransaksi', $startDate);
         Session::put('endDateTransaksi', $endDate);
+        Session::put('namaTransaksi', $nama);
+
         return view('report.rekap', compact('transaksis','datenow', 'startDate','endDate','total'));
     }
     public function reportTransaksiPdf(Request $request)
     {
         $startDate= Session::get('startDateTransaksi');
         $endDate = Session::get('endDateTransaksi');
+        $nama = Session::get('namaTransaksi');
+
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $datenow = date('Y-m-d');
         if ($startDate == NULL ) {
