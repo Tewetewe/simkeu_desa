@@ -666,7 +666,7 @@ class ReportController extends Controller
         Session::put('endDateTransaksi', $endDate);
         Session::put('namaTransaksi', $nama);
 
-        return view('report.rekap', compact('transaksis','datenow', 'startDate','endDate','total'));
+        return view('report.rekap', compact('transaksis','datenow', 'startDate','endDate','total','nama'));
     }
     public function reportTransaksiPdf(Request $request)
     {
@@ -735,7 +735,7 @@ class ReportController extends Controller
                 ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                 ->where('transaksi.status',1);
                 if(!empty($nama)){
-                    $query->where('transaksi.nama_trans', $nama);
+                    $nominal->where('transaksi.nama_trans', $nama);
                 }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -749,7 +749,7 @@ class ReportController extends Controller
         $nama_file = 'laporan_rekap_'.date('Y-m-d').'.pdf';
 
 
-        $pdf = PDF::loadview('pdf.rekap',compact('transaksis', 'startDateNew','endDateNew','total'));
+        $pdf = PDF::loadview('pdf.rekap',compact('transaksis', 'startDateNew','endDateNew','total','nama'));
 	    return $pdf->stream($nama_file);
     }
     /**
