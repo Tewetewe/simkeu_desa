@@ -616,7 +616,7 @@ class ReportController extends Controller
                     ->orderBy('tanggal','ASC');
         
         if(!empty($nama)){
-                $nominal->where('transaksi.nama_trans', $nama);
+                $query->where('transaksi.nama_trans', $nama);
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
