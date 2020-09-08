@@ -56,7 +56,7 @@
                                             <td> {{ $detailtransaksis[$i-1]->satuan}}</td>
                                             <td> {{"Rp ".number_format($detailtransaksis[$i-1]->subtotal,0,",",".")  }}</td>
                                             <td> {{ $detailtransaksis[$i-1]->tanggal_detail }}</td>
-                                            <td> {{ $detailtransaksis[$i-1]->keterangan }}</td>
+                                            <td> {{ $detailtransaksis[$i-1]->keterangan_detail }}</td>
                                             <td> {{ $detailtransaksis[$i-1]->created_at}}</td>
                                             @if($detailtransaksis[$i-1]->status == 1)
                                                 <td>Aktif</td>
