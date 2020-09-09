@@ -18,10 +18,11 @@
                                 </div>
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-success mr-2">
                                     @if($lastDebit >= 0)
+                                    <span class="text-success mr-2">
                                     <i class="fa fa-arrow-up">
                                     @else
+                                    <span class="text-danger mr-2">
                                     <i class="fa fa-arrow-down">
                                     @endif
                                     </i>{{"Rp ".number_format($lastDebit,0,",",".")  }}</i></span>
@@ -45,10 +46,11 @@
                                 </div>
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-danger mr-2">
                                     @if($lastKredit <= 0)
+                                    <span class="text-success mr-2">
                                     <i class="fa fa-arrow-up">
                                     @else
+                                    <span class="text-danger mr-2">
                                     <i class="fa fa-arrow-down">
                                     @endif
                                     </i>{{"Rp ".number_format($lastKredit*-1,0,",",".")  }}</span>
@@ -72,10 +74,11 @@
                                 </div>
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-warning mr-2">
                                     @if($lastSaldo >= 0)
+                                    <span class="text-success mr-2">
                                     <i class="fa fa-arrow-up">
                                     @else
+                                    <span class="text-danger mr-2">
                                     <i class="fa fa-arrow-down">
                                     @endif
                                         </i>{{"Rp ".number_format($lastSaldo,0,",",".")  }}</span>
@@ -99,10 +102,11 @@
                                 </div>
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
-                            <span class="text-success mr-2">
                                 @if($lastRatio >= 0)
+                                <span class="text-success mr-2">
                                 <i class="fa fa-arrow-up">
                                 @else
+                                <span class="text-danger mr-2">
                                 <i class="fa fa-arrow-down">
                                 @endif
                                     </i>{{$lastRatio}} %</span>

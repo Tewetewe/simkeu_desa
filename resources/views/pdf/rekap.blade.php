@@ -26,6 +26,8 @@
         <h6>{{''}}</h6>
     </div>
     <div>
+        <h6> <b> Total Pendapatan : {{"Rp ".number_format($totalPendapatan,0,",",".")  }} </b></h6>
+        <h6> <b> Total Pengeluaran : {{"Rp ".number_format($totalPengeluaran*-1,0,",",".")  }} </b></h6>
         <h6> <b> Total Saldo : {{"Rp ".number_format($total,0,",",".")  }} </b></h6>
     </div>
     <div class="table-responsive">
@@ -92,6 +94,11 @@
                 @endfor
             </tbody>
         </table>
+        <style>
+            .table-bordered td, .table-bordered tr, .table-bordered th{
+                border-color: black !important;
+            }
+        </style>
     </div>
  
 </body>

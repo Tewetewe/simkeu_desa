@@ -122,7 +122,7 @@ class ReportController extends Controller
             $query->where('transaksi.id_sub_2', '=', $sub2kategori);
         }
         if(!empty($nama)){
-            $query->where('transaksi.nama_trans', $nama);
+            $query->where('transaksi.nama_trans', 'like', "%".$nama."%");
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -169,7 +169,7 @@ class ReportController extends Controller
             $nominal->where('transaksi.id_sub_2', '=', $sub2kategori);
             }
             if(!empty($nama)){
-            $nominal->where('transaksi.nama_trans', $nama);
+            $nominal->where('transaksi.nama_trans', 'like', "%".$nama."%");
             }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -225,7 +225,7 @@ class ReportController extends Controller
             $query->where('transaksi.id_sub_2', '=', $sub2kategori);
         }
         if(!empty($nama)){
-            $query->where('transaksi.nama_trans', $nama);
+            $query->where('transaksi.nama_trans', 'like', "%".$nama."%");
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -272,7 +272,7 @@ class ReportController extends Controller
             $nominal->where('transaksi.id_sub_2', '=', $sub2kategori);
             }
             if(!empty($nama)){
-            $nominal->where('transaksi.nama_trans',$nama);
+            $nominal->where('transaksi.nama_trans','like', "%".$nama."%");
             }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -373,7 +373,7 @@ class ReportController extends Controller
             $query->where('transaksi.id_sub_2', '=', $sub2kategori);
         }
         if(!empty($nama)){
-            $query->where('transaksi.nama_trans', $nama);
+            $query->where('transaksi.nama_trans', 'like', "%".$nama."%");
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -420,7 +420,7 @@ class ReportController extends Controller
             $nominal->where('transaksi.id_sub_2', '=', $sub2kategori);
             }
             if(!empty($nama)){
-            $nominal->where('transaksi.nama_trans', $nama);
+            $nominal->where('transaksi.nama_trans', 'like', "%".$nama."%");
             }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -479,7 +479,7 @@ class ReportController extends Controller
             $query->where('transaksi.id_sub_2', '=', $sub2kategori);
         }
         if(!empty($nama)){
-            $query->where('transaksi.nama_trans',$nama);
+            $query->where('transaksi.nama_trans','like', "%".$nama."%");
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -527,7 +527,7 @@ class ReportController extends Controller
             $nominal->where('transaksi.id_sub_2', '=', $sub2kategori);
             }
             if(!empty($nama)){
-            $nominal->where('transaksi.nama_trans',$nama);
+            $nominal->where('transaksi.nama_trans','like', "%".$nama."%");
             }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -592,7 +592,23 @@ class ReportController extends Controller
                     ->where('transaksi.status',1)
                     ->whereYear('tanggal', $datenow)
                     ->sum('nominal');
-        return view ('report.rekap', compact('datenow','transaksis','total'));
+        $totalPendapatan = DB::table('transaksi')
+                    ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                    ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                    ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                    ->where('transaksi.status',1)
+                    ->where('tipe', 1)
+                    ->whereYear('tanggal', $datenow)
+                    ->sum('nominal');
+        $totalPengeluaran = DB::table('transaksi')
+                    ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                    ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                    ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                    ->where('transaksi.status',1)
+                    ->where('tipe', -1)
+                    ->whereYear('tanggal', $datenow)
+                    ->sum('nominal');
+        return view ('report.rekap', compact('datenow','transaksis','total','totalPendapatan','totalPengeluaran'));
     }
 
     /**
@@ -616,7 +632,7 @@ class ReportController extends Controller
                     ->orderBy('tanggal','ASC');
         
         if(!empty($nama)){
-                $query->where('transaksi.nama_trans', $nama);
+                $query->where('transaksi.nama_trans',  'like', "%".$nama."%");
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -653,7 +669,7 @@ class ReportController extends Controller
                 ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                 ->where('transaksi.status',1);
             if(!empty($nama)){
-                    $nominal->where('transaksi.nama_trans',$nama);
+                    $nominal->where('transaksi.nama_trans', 'like', "%".$nama."%");
             }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -662,11 +678,43 @@ class ReportController extends Controller
             ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
         }
         $total = $nominal->sum('nominal');
+        $pendapatan   = Transaksi::query()
+                ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                ->where('tipe', 1)
+                ->where('transaksi.status',1);
+            if(!empty($nama)){
+                    $pendapatan->where('transaksi.nama_trans', 'like', "%".$nama."%");
+            }
+            if(!empty($startDate) && ($endDate)){
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            $pendapatan->whereDate('transaksi.tanggal','<=',$end->format('Y-m-d'))
+            ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
+        }
+        $totalPendapatan = $pendapatan->sum('nominal');
+        $pengeluaran   = Transaksi::query()
+                ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                ->where('tipe', -1)
+                ->where('transaksi.status',1);
+            if(!empty($nama)){
+                    $pengeluaran->where('transaksi.nama_trans', 'like', "%".$nama."%");
+            }
+            if(!empty($startDate) && ($endDate)){
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            $pengeluaran->whereDate('transaksi.tanggal','<=',$end->format('Y-m-d'))
+            ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
+        }
+        $totalPengeluaran = $pengeluaran->sum('nominal');
         Session::put('startDateTransaksi', $startDate);
         Session::put('endDateTransaksi', $endDate);
         Session::put('namaTransaksi', $nama);
 
-        return view('report.rekap', compact('transaksis','datenow', 'startDate','endDate','total','nama'));
+        return view('report.rekap', compact('transaksis','datenow', 'startDate','endDate','total','totalPendapatan','totalPengeluaran','nama'));
     }
     public function reportTransaksiPdf(Request $request)
     {
@@ -697,7 +745,7 @@ class ReportController extends Controller
                     ->where('transaksi.status',1)
                     ->orderBy('tanggal','ASC');
         if(!empty($nama)){
-            $query->where('transaksi.nama_trans', $nama);
+            $query->where('transaksi.nama_trans', 'like', "%".$nama."%");
         }
         if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -735,7 +783,7 @@ class ReportController extends Controller
                 ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
                 ->where('transaksi.status',1);
                 if(!empty($nama)){
-                    $nominal->where('transaksi.nama_trans', $nama);
+                    $nominal->where('transaksi.nama_trans', 'like', "%".$nama."%");
                 }
             if(!empty($startDate) && ($endDate)){
             $start = Carbon::parse($startDate);
@@ -744,12 +792,44 @@ class ReportController extends Controller
             ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
         }
         $total = $nominal->sum('nominal');
+        $pendapatan   = Transaksi::query()
+                ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                ->where('tipe', 1)
+                ->where('transaksi.status',1);
+            if(!empty($nama)){
+                    $pendapatan->where('transaksi.nama_trans', 'like', "%".$nama."%");
+            }
+            if(!empty($startDate) && ($endDate)){
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            $pendapatan->whereDate('transaksi.tanggal','<=',$end->format('Y-m-d'))
+            ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
+        }
+        $totalPendapatan = $pendapatan->sum('nominal');
+        $pengeluaran   = Transaksi::query()
+                ->join('ktg_transaksi', 'ktg_transaksi.id_ktg_transaksi', '=', 'transaksi.id_ktg_transaksi')
+                ->LeftJoin('sub_ktg_transaksi', 'sub_ktg_transaksi.id_sub_ktg','=','transaksi.id_sub_ktg')
+                ->LeftJoin('sub_2_ktg_transaksi','sub_2_ktg_transaksi.id_sub_2','=','transaksi.id_sub_2')
+                ->where('tipe', -1)
+                ->where('transaksi.status',1);
+            if(!empty($nama)){
+                    $pengeluaran->where('transaksi.nama_trans', 'like', "%".$nama."%");
+            }
+            if(!empty($startDate) && ($endDate)){
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            $pengeluaran->whereDate('transaksi.tanggal','<=',$end->format('Y-m-d'))
+            ->whereDate('transaksi.tanggal','>=',$start->format('Y-m-d'));
+        }
+        $totalPengeluaran = $pengeluaran->sum('nominal');
         $startDateNew = date('d F Y', strtotime($startDate));
         $endDateNew = date('d F Y', strtotime($endDate));
         $nama_file = 'laporan_rekap_'.date('Y-m-d').'.pdf';
 
 
-        $pdf = PDF::loadview('pdf.rekap',compact('transaksis', 'startDateNew','endDateNew','total','nama'));
+        $pdf = PDF::loadview('pdf.rekap',compact('transaksis', 'startDateNew','endDateNew','total','totalPendapatan','totalPengeluaran','nama'));
 	    return $pdf->stream($nama_file);
     }
     /**

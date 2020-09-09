@@ -13,7 +13,7 @@
 	<style type="text/css">
 		table tr td,
 		table tr th{
-			font-size: 8pt;
+			font-size: 7pt;
 		}
 	</style>
 	<center>
@@ -84,6 +84,11 @@
                 @endfor
             </tbody>
         </table>
+        <style>
+            .table-bordered td, .table-bordered tr, .table-bordered th{
+                border-color: black !important;
+            }
+        </style>
     </div>
  
 </body>

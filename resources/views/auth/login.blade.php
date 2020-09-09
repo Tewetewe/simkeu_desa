@@ -7,7 +7,6 @@
         <div class="row justify-content-center">
             <div class="col-lg-5 col-md-7">
                 <div class="card bg-secondary shadow border-0">
-                 
                     <div class="card-body px-lg-5 py-lg-5">
                         <div class="text-center text-muted mb-4">
                             <small>
@@ -78,3 +77,9 @@
         </div>
     </div>
 @endsection
+<style> 
+    .body {
+        background-image: url("{{ asset('argon') }}/img/brand/cover.png");
+        
+    }
+</style>

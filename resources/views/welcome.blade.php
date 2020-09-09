@@ -1,7 +1,7 @@
 @extends('layouts.app', ['class' => 'bg-default'])
 
 @section('content')
-    <div class="header bg-gradient-primary py-7 py-lg-8">
+    <div class="header body py-8 py-lg-9">
         <div class="container">
             <div class="header-body text-center mt-7 mb-7">
                 <div class="row justify-content-center">
@@ -20,3 +20,11 @@
 
     <div class="container mt--10 pb-5"></div>
 @endsection
+
+<style> 
+    .body {
+        background-image: url("{{ asset('argon') }}/img/brand/cover.png");
+        
+    }
+</style>
+    

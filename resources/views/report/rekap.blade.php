@@ -59,7 +59,9 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                            <h2 class="mb-2">Total Saldo Desa : {{"Rp ".number_format($total,0,",",".")}}</h2>
+                                <h2 class="mb-2">Total Pendapatan Desa : {{"Rp ".number_format($totalPendapatan,0,",",".")}}</h2>
+                                <h2 class="mb-2">Total Pengeluaran Desa : {{"Rp ".number_format($totalPengeluaran*-1,0,",",".")}}</h2>
+                                <h2 class="mb-2">Total Saldo Desa : {{"Rp ".number_format($total,0,",",".")}}</h2>
                             </div>
                         </div>
                     </div>

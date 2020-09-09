@@ -13,7 +13,7 @@
 	<style type="text/css">
 		table tr td,
 		table tr th{
-			font-size: 8pt;
+			font-size: 7pt;
 		}
 	</style>
 	<center>
@@ -25,10 +25,8 @@
          <h5>{{$startDateNew}} - {{$endDateNew}}</h5>
 
     </center>
-    <div>
-        <h6>{{''}}</h6>
-    </div>
-    <div>
+  
+    <div class="mt-7">
         <h6> <b> Total Pendapatan : {{"Rp ".number_format($total,0,",",".")  }} </b></h6>
     </div>
     <div class="table-responsive">
@@ -84,6 +82,12 @@
                 @endfor
             </tbody>
         </table>
+        <style>
+            .table-bordered td, .table-bordered tr, .table-bordered th{
+                border-color: black !important;
+            }
+        </style>
+        
     </div>
  
 </body>

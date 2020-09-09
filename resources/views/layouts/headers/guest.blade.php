@@ -1,4 +1,4 @@
-<div class="header bg-gradient-primary py-7 py-lg-8">
+<div class="header body py-8 py-lg-9">
     <div class="container">
         <div class="header-body text-center mb-7">
             <div class="row justify-content-center">
@@ -14,3 +14,9 @@
         </svg>
     </div>
 </div>
+<style> 
+    .body {
+        background-image: url("{{ asset('argon') }}/img/brand/cover.png");
+        
+    }
+</style>
