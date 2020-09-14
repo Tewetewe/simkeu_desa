@@ -131,7 +131,6 @@
             });
         });
     </script>
-        <script type="text/javascript" src="{{ asset('argon')}}/js/jquery.min.js"></script>
         <script type="text/javascript" src="{{ asset('argon')}}/js/bootstrap.min.js"></script>
         <script>
                 $(document).ready(function() {
