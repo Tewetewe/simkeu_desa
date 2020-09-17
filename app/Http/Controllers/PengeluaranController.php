@@ -187,7 +187,7 @@ class PengeluaranController extends Controller
         $pengeluaran->updated_at = date('Y-m-d H:i:s');
         $pengeluaran->status = 1;
         $pengeluaran->save();
-        return redirect('pengeluaran/create');
+        return back()->withStatus(__('Pengeluaran successfully Added.'));
     }
 
     /**

@@ -102,7 +102,7 @@ class PendapatanController extends Controller
         $pendapatan->updated_at = date('Y-m-d H:i:s');
         $pendapatan->status = 1;
         $pendapatan->save();
-        return redirect('pendapatan/create');
+        return back()->withStatus(__('Pendapatan successfully Added.'));
     }
 
     /**
@@ -119,15 +119,10 @@ class PendapatanController extends Controller
                         ->where('transaksi.id_transaksi', $id)
                         ->where('detail_transaksi.status',1)
                         ->get();
+        
         return view('detailpendapatan.index', compact('detailtransaksis'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $pendapatan = DB::table('transaksi')

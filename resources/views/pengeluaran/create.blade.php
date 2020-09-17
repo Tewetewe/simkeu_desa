@@ -20,6 +20,14 @@
 
                      <!-- Form Cari Data Dunia -->
                      <div class="p-4 bg-secondary">
+                        @if (session('status'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('status') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        @endif
                         <form action="/pengeluaran" method="POST">
                             @csrf
                             <div class="form-group" {{ ($errors->has('roll'))?'has-error':'' }}>
